@@ -31,7 +31,7 @@ enum pubnub_state {
     PBS_WAIT_CONNECT,
     /** TCP connected */
     PBS_CONNECTED,
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     /** Waiting for TLS connection establishment */
     PBS_WAIT_TLS_CONNECT,
 #endif

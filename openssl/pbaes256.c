@@ -77,7 +77,7 @@ pubnub_bymebl_t pbaes256_encrypt_alloc(pubnub_bymebl_t msg, uint8_t const* key, 
         return result;
     }
 
-#if PUBNUB_RAND_INIT_VECTOR
+#ifdef PUBNUB_RAND_INIT_VECTOR
     result.ptr = (uint8_t*)malloc(msg.size + EVP_CIPHER_block_size(EVP_aes_256_cbc())*2);
 #else
     result.ptr = (uint8_t*)malloc(msg.size + EVP_CIPHER_block_size(EVP_aes_256_cbc()));

@@ -18,7 +18,7 @@
  */
 
 
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
 /** Processes a proxy related HTTP @p header on the Pubnub context @p
     p.
     @return 0 expected, -1 unexpected proxy authentication header

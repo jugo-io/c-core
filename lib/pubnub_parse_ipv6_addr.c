@@ -1,7 +1,7 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 #include "pubnub_config.h"
 
-#if !PUBNUB_USE_IPV6
+#ifndef PUBNUB_USE_IPV6
 #error PUBNUB_USE_IPV6 must be defined and set to 1 before compiling this file
 #endif
 #include "core/pubnub_dns_servers.h"

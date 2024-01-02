@@ -1,7 +1,7 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 #include "pubnub_internal.h"
 
-#if PUBNUB_USE_FETCH_HISTORY
+#ifdef PUBNUB_USE_FETCH_HISTORY
 #include "pubnub_memory_block.h"
 #include "pubnub_server_limits.h"
 #include "pubnub_fetch_history.h"
@@ -61,7 +61,7 @@ enum pubnub_res pbcc_fetch_history_prep(struct pbcc_context* pb,
     if (include_meta != pbccNotSet) { ADD_URL_PARAM(qparam, include_meta, include_meta == pbccTrue ? "1" : "0"); }
     if (include_message_type != pbccNotSet) { ADD_URL_PARAM(qparam, include_message_type, include_meta == pbccTrue ? "1" : "0"); }
     if (include_user_id != pbccNotSet) { ADD_URL_PARAM(qparam, include_uuid, include_user_id == pbccTrue ? "1" : "0"); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -71,11 +71,11 @@ enum pubnub_res pbcc_fetch_history_prep(struct pbcc_context* pb,
     if (start) { ADD_URL_PARAM(qparam, start, start); }
     if (end) { ADD_URL_PARAM(qparam, end, end); }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMETERS(pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubSendViaGET, true);
     }

@@ -27,12 +27,12 @@
 /** Considering the size of bit field for DNS queries sent */
 PUBNUB_STATIC_ASSERT(PUBNUB_MAX_DNS_QUERIES < (1 << SENT_QUERIES_SIZE_IN_BITS),
                      PUBNUB_MAX_DNS_QUERIES_is_too_big);
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 /** Considering the size of bit field for DNS servers rotations count */
 PUBNUB_STATIC_ASSERT(PUBNUB_MAX_DNS_ROTATION < (1 << ROTATIONS_COUNT_SIZE_IN_BITS),
                      PUBNUB_MAX_DNS_ROTATION_is_too_big);
 #endif /* PUBNUB_CHANGE_DNS_SERVERS */
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 typedef struct sockaddr_storage sockaddr_inX_t;
 #define QUERY_TYPE pb->options.ipv6_connectivity ? dnsAAAA : dnsA
 #else
@@ -50,19 +50,19 @@ static void prepare_port_and_hostname(pubnub_t*    pb,
     PUBNUB_ASSERT_OPT((pb->state == PBS_READY) || (pb->state == PBS_WAIT_DNS_SEND));
     *p_origin = PUBNUB_ORIGIN;
     *p_port = HTTP_PORT;
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     if (pb->flags.trySSL) {
         PUBNUB_ASSERT(pb->options.useSSL);
         *p_port = TLS_PORT;
     }
 #endif
-#if PUBNUB_ORIGIN_SETTABLE
+#ifdef PUBNUB_ORIGIN_SETTABLE
     if (pb->port != INITIAL_PORT_VALUE) {
         *p_port = pb->port;
     }
     *p_origin = pb->origin;
 #endif
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
     switch (pb->proxy_type) {
     case pbproxyHTTP_CONNECT:
         if (!pb->proxy_tunnel_established) {
@@ -91,12 +91,12 @@ static void get_default_dns_ip(struct pubnub_ipv4_address *addr) {
     }
 }
 
-#if PUBNUB_SET_DNS_SERVERS
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_SET_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 static void get_dns_ip(struct pbdns_servers_check* dns_check, struct sockaddr* addr)
 {
     void* p = &(((struct sockaddr_in*)addr)->sin_addr.s_addr);
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     void* pv6 = ((struct sockaddr_in6*)addr)->sin6_addr.s6_addr;
 #endif
     addr->sa_family     = AF_INET;
@@ -108,14 +108,14 @@ static void get_dns_ip(struct pbdns_servers_check* dns_check, struct sockaddr* a
              == -1)
             || (dns_check->dns_server_check & dns_check->dns_mask)) {
             dns_check->dns_mask <<= 1;
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
             addr->sa_family = AF_INET6;
 #else
             get_default_dns_ip((struct pubnub_ipv4_address*)p);
 #endif /* PUBNUB_USE_IPV6 */
         }
     }
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     if (AF_INET6 == addr->sa_family) {
         if ((pubnub_get_dns_primary_server_ipv6((struct pubnub_ipv6_address*)pv6)
              == -1)
@@ -136,14 +136,14 @@ static void get_dns_ip(struct pbdns_servers_check* dns_check, struct sockaddr* a
 static void get_dns_ip(struct sockaddr* addr)
 {
     void* p         = &(((struct sockaddr_in*)addr)->sin_addr.s_addr);
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     void* pv6       = ((struct sockaddr_in6*)addr)->sin6_addr.s6_addr;
 #endif
     addr->sa_family = AF_INET;
     if ((pubnub_get_dns_primary_server_ipv4((struct pubnub_ipv4_address*)p) == -1)
         && (pubnub_get_dns_secondary_server_ipv4((struct pubnub_ipv4_address*)p)
             == -1)) {
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
         addr->sa_family = AF_INET6;
 #else
         get_default_dns_ip((struct pubnub_ipv4_address*)p);
@@ -187,7 +187,7 @@ connect_TCP_socket(pb_socket_t*           skt,
         PUBNUB_LOG_TRACE("connect_TCP_socket(Ipv4:%s)\n",
                          inet_ntoa(((struct sockaddr_in*)dest)->sin_addr));
         break;
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     case AF_INET6: {
         char str[INET6_ADDRSTRLEN];
         sockaddr_size                           = sizeof(struct sockaddr_in6);
@@ -222,7 +222,7 @@ connect_TCP_socket(pb_socket_t*           skt,
 }
 
 
-#if PUBNUB_ADNS_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_ADNS_RETRY_AFTER_CLOSE
 static void if_no_retry_close_socket(pb_socket_t* skt, struct pubnub_flags* flags)
 {
     if (!flags->retry_after_close && (*skt != SOCKET_INVALID)) {
@@ -233,7 +233,7 @@ static void if_no_retry_close_socket(pb_socket_t* skt, struct pubnub_flags* flag
 #endif /* PUBNUB_ADNS_RETRY_AFTER_CLOSE */
 
 
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 int pbpal_dns_rotate_server(pubnub_t *pb)
 {
     struct pbdns_servers_check* dns_check = &pb->dns_check;
@@ -273,12 +273,12 @@ static void check_dns_server_error(struct pbdns_servers_check* dns_check,
 }
 #endif /* PUBNUB_CHANGE_DNS_SERVERS */
 
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
 void pbpal_multiple_addresses_reset_counters(struct pubnub_multi_addresses* spare_addresses)
 {
     spare_addresses->n_ipv4     = 0;
     spare_addresses->ipv4_index = 0;
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     spare_addresses->n_ipv6     = 0;
     spare_addresses->ipv6_index = 0;
 #endif
@@ -332,12 +332,12 @@ try_TCP_connect_spare_address(pb_socket_t*                   skt,
             flags->retry_after_close =
                 (++spare_addresses->ipv4_index < spare_addresses->n_ipv4);
             if_no_retry_close_socket(skt, flags);
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
             flags->trySSL = options->useSSL;
 #endif
         }
     }
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     else if (spare_addresses->ipv6_index < spare_addresses->n_ipv6) {
         PUBNUB_LOG_TRACE(
             "spare_addresses->ipv6_index = %d, spare_addresses->n_ipv6 = %d.\n",
@@ -380,7 +380,7 @@ try_TCP_connect_spare_address(pb_socket_t*                   skt,
             flags->retry_after_close =
                 (++spare_addresses->ipv6_index < spare_addresses->n_ipv6);
             if_no_retry_close_socket(skt, flags);
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
             flags->trySSL = options->useSSL;
 #endif
         }
@@ -410,7 +410,7 @@ enum pbpal_resolv_n_connect_result pbpal_resolv_and_connect(pubnub_t* pb)
     sockaddr_inX_t dest = { 0 };
 
     prepare_port_and_hostname(pb, &port, &origin);
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
     if (0 != pb->proxy_ipv4_address.ipv4[0]) {
         struct sockaddr_in dest = { 0 };
         PUBNUB_LOG_TRACE("(0 != pb->proxy_ipv4_address.ipv4[0]) - ");
@@ -421,7 +421,7 @@ enum pbpal_resolv_n_connect_result pbpal_resolv_and_connect(pubnub_t* pb)
         return connect_TCP_socket(
             &pb->pal.socket, &pb->options, (struct sockaddr*)&dest, port);
     }
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     else if ((0 != pb->proxy_ipv6_address.ipv6[0])
              || (0 != pb->proxy_ipv6_address.ipv6[1])) {
         struct sockaddr_in6 dest = { 0 };
@@ -436,7 +436,7 @@ enum pbpal_resolv_n_connect_result pbpal_resolv_and_connect(pubnub_t* pb)
     }
 #endif /* PUBNUB_USE_IPV6 */
 #endif /* PUBNUB_PROXY_API */
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     {
         enum pbpal_resolv_n_connect_result rslt;
         rslt = try_TCP_connect_spare_address(
@@ -446,7 +446,7 @@ enum pbpal_resolv_n_connect_result pbpal_resolv_and_connect(pubnub_t* pb)
         }
     }
 #endif
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
     get_dns_ip(&pb->dns_check, (struct sockaddr*)&dest);
 #else
     get_dns_ip((struct sockaddr*)&dest);
@@ -463,7 +463,7 @@ enum pbpal_resolv_n_connect_result pbpal_resolv_and_connect(pubnub_t* pb)
     error =
         send_dns_query(pb->pal.socket, (struct sockaddr*)&dest, origin, QUERY_TYPE);
     if (error < 0) {
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
         check_dns_server_error(&pb->dns_check, &pb->flags);
         if_no_retry_close_socket(&pb->pal.socket, &pb->flags);
 #endif
@@ -530,7 +530,7 @@ enum pbpal_resolv_n_connect_result pbpal_resolv_and_connect(pubnub_t* pb)
 #endif /* PUBNUB_CALLBACK_API */
 }
 
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
 #define PBDNS_OPTIONAL_PARAMS_PB , &pb->spare_addresses, &pb->options
 #else
 #define PBDNS_OPTIONAL_PARAMS_PB
@@ -547,18 +547,18 @@ enum pbpal_resolv_n_connect_result pbpal_check_resolv_and_connect(pubnub_t* pb)
 
     PUBNUB_ASSERT(pb_valid_ctx_ptr(pb));
     PUBNUB_ASSERT_OPT(pb->state == PBS_WAIT_DNS_RCV);
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     if (pb->flags.trySSL) {
         PUBNUB_ASSERT(pb->options.useSSL);
         port = TLS_PORT;
     }
 #endif
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
     if (pbproxyNONE != pb->proxy_type) {
         port = pb->proxy_port;
     }
 #endif
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
     get_dns_ip(&pb->dns_check, (struct sockaddr*)&dns_server);
 #else
     get_dns_ip((struct sockaddr*)&dns_server);
@@ -567,14 +567,14 @@ enum pbpal_resolv_n_connect_result pbpal_check_resolv_and_connect(pubnub_t* pb)
                               (struct sockaddr*)&dns_server,
                               (struct sockaddr*)&dest PBDNS_OPTIONAL_PARAMS_PB)) {
     case -1:
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
         check_dns_server_error(&pb->dns_check, &pb->flags);
 #endif
         return pbpal_resolv_failed_rcv;
     case +1:
         return pbpal_resolv_rcv_wouldblock;
     case 0:
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
         pb->flags.rotations_count = 0;
 #endif /* PUBNUB_CHANGE_DNS_SERVERS */
         break;
@@ -583,19 +583,19 @@ enum pbpal_resolv_n_connect_result pbpal_check_resolv_and_connect(pubnub_t* pb)
 
     rslt = connect_TCP_socket(
         &pb->pal.socket, &pb->options, (struct sockaddr*)&dest, port);
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     if (pbpal_connect_failed == rslt) {
         if (AF_INET == ((struct sockaddr*)&dest)->sa_family) {
             pb->flags.retry_after_close =
                 (++pb->spare_addresses.ipv4_index < pb->spare_addresses.n_ipv4);
         }
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
         else if (AF_INET6 == ((struct sockaddr*)&dest)->sa_family) {
             pb->flags.retry_after_close =
                 (++pb->spare_addresses.ipv6_index < pb->spare_addresses.n_ipv6);
         }
 #endif
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
         pb->flags.trySSL = pb->options.useSSL;
 #endif
     }
@@ -650,19 +650,19 @@ enum pbpal_resolv_n_connect_result pbpal_check_connect(pubnub_t* pb)
             "error_code=%d\n",
             pb,
             error_code);
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
         PUBNUB_LOG_ERROR(
             "       time_since_the_last_dns_query = %ld seconds\n",
             (long)(time(NULL) - pb->spare_addresses.time_of_the_last_dns_query));
         pb->flags.retry_after_close =
             (++pb->spare_addresses.ipv4_index < pb->spare_addresses.n_ipv4);
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
         if (!pb->flags.retry_after_close) {
             pb->flags.retry_after_close =
                 (++pb->spare_addresses.ipv6_index < pb->spare_addresses.n_ipv6);
         }
 #endif
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
         pb->flags.trySSL = pb->options.useSSL;
 #endif
 #endif /* PUBNUB_USE_MULTIPLE_ADDRESSES */

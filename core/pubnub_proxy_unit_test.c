@@ -130,7 +130,7 @@ enum pbpal_resolv_n_connect_result pbpal_check_resolv_and_connect(pubnub_t *pb)
 }
 
 #if defined(PUBNUB_CALLBACK_API)
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 int pbpal_dns_rotate_server(pubnub_t *pb)
 {
     return (int)mock(pb);
@@ -368,7 +368,7 @@ int pbpal_close(pubnub_t *pb)
     return mock(pb);
 }
 
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
 void pbpal_multiple_addresses_reset_counters(struct pubnub_multi_addresses* spare_addresses)
 {
     PUBNUB_UNUSED(spare_addresses);

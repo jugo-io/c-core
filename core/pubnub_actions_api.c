@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_USE_ACTIONS_API
+#ifdef PUBNUB_USE_ACTIONS_API
 
 #include "pubnub_internal.h"
 
@@ -43,7 +43,7 @@ enum pubnub_res pubnub_add_message_action(pubnub_t* pb,
         pubnub_mutex_unlock(pb->monitor);
         return rslt;
     }
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
     value = (pbgzip_compress(pb, value) == PNR_OK) ? pb->core.gzip_msg_buf : value;
 #endif
     pb->method = pubnubSendViaPOST;

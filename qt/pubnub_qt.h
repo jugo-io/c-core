@@ -24,13 +24,13 @@ extern "C" {
 #include "core/pubnub_ccore_limits.h"
 #include "core/pubnub_coreapi_ex.h"
 #include "core/pubnub_helper.h"
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 #include "core/pbcc_subscribe_v2.h"
 #endif
-#if PUBNUB_USE_ACTIONS_API
+#ifdef PUBNUB_USE_ACTIONS_API
 #include "core/pbcc_actions_api.h"
 #endif
-#if PUBNUB_USE_PAM_V3
+#ifdef PUBNUB_USE_PAM_V3
 #include "core/pbcc_grant_token_api.h"
 #endif
 #include "core/pubnub_crypto.h"
@@ -38,7 +38,7 @@ extern "C" {
 
 #include "cpp/tribool.hpp"
 #include "lib/pb_deprecated.h"
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 #include "cpp/pubnub_v2_message.hpp"
 #endif
 
@@ -151,7 +151,7 @@ public:
     pubnub_set_state_options data() { return d_; }
 };
 
-#if PUBNUB_USE_OBJECTS_API
+#ifdef PUBNUB_USE_OBJECTS_API
 #define MAX_INCLUDE_DIMENSION 100
 #define MAX_ELEM_LENGTH 30
 /** A wrapper class for objects api managing include parameter */
@@ -257,7 +257,7 @@ public:
 struct pbcc_context;
 
 
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 /** A wrapper class for subscribe_v2 options, enabling a nicer
     usage. Something like:
 
@@ -603,7 +603,7 @@ public:
     /** Returns all (remaining) messages from a context */
     QStringList get_all() const;
 
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
     /** Returns the v2 message object of an arrived message. Message(s)
         arrive on finish of a subscribe_v2 operation.
         That is documented in the function that starts the operation.
@@ -814,7 +814,7 @@ public:
         return subscribe(channel.join(","), channel_group.join(","));
     }
 
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
     /** The V2 subscribe. To get messages for subscribe V2, use pb.get_v2().
         - keep in mind that it can provide you with channel and channel group info.
 
@@ -1423,7 +1423,7 @@ public:
     */
     pubnub_res list_channel_group(QString const& channel_group);
 
-#if PUBNUB_USE_OBJECTS_API
+#ifdef PUBNUB_USE_OBJECTS_API
 
     /** Initiates transaction that returns the space memberships of the user specified
         by @p user_id, optionally including the custom data objects for...
@@ -1762,7 +1762,7 @@ public:
     }
 #endif /* PUBNUB_USE_OBJECTS_API */
 
-#if PUBNUB_USE_ACTIONS_API
+#ifdef PUBNUB_USE_ACTIONS_API
     /** Adds new type of message called action as a support for user reactions on a published
         messages.
         Json string @p value is checked for its quotation marks at its ends. If any of the
@@ -1900,7 +1900,7 @@ public:
     pubnub_res history_with_message_actions_more();
 #endif /* PUBNUB_USE_ACTIONS_API */
 
-#if PUBNUB_USE_AUTO_HEARTBEAT
+#ifdef PUBNUB_USE_AUTO_HEARTBEAT
     /** Enables keeping presence on subscribed channels and channel groups
      * by performing heartbeat transacton periodically
      * @param period_sec auto heartbeat period in seconds. If it is shorter than minimal
@@ -1991,7 +1991,7 @@ public:
         t.fromMSecsSinceStartOfDay(transaction_timeout_get());
     }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     /// Set the crypto module to be set by the context
     ///
     /// This function sets the crypto module to be used by the context
@@ -2021,7 +2021,7 @@ private slots:
 #ifndef QT_NO_SSL
     void sslErrors(QNetworkReply* reply, QList<QSslError> const& errors);
 #endif
-#if PUBNUB_USE_AUTO_HEARTBEAT
+#ifdef PUBNUB_USE_AUTO_HEARTBEAT
     void auto_heartbeatTimeout();
 #endif
 
@@ -2039,7 +2039,7 @@ private:
     /// Common function which processes the data received in response
     pubnub_res finish(QByteArray const &data, int http_code);
 
-#if PUBNUB_USE_AUTO_HEARTBEAT
+#ifdef PUBNUB_USE_AUTO_HEARTBEAT
     /// Checks whether to use saved channels and channel groups
     bool check_if_default_channel_and_groups(QString const& channel,
                                              QString const& channel_group,
@@ -2101,7 +2101,7 @@ private:
 
     /// Transaction timer
     QTimer *d_transactionTimer;
-#if PUBNUB_USE_AUTO_HEARTBEAT
+#ifdef PUBNUB_USE_AUTO_HEARTBEAT
     /// Auto heartbeat is enabled and pulsing whenever subscription is not in progress
     bool d_auto_heartbeat_enabled;
     /// Auto heartbeat period in seconds

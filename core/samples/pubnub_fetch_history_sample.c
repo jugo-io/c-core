@@ -1,7 +1,7 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 #define PUBNUB_USE_FETCH_HISTORY 1
 #include "pubnub_sync.h"
-#if PUBNUB_USE_FETCH_HISTORY
+#ifdef PUBNUB_USE_FETCH_HISTORY
 #include "core/pubnub_fetch_history.c"
 #endif
 #include "core/pubnub_helper.h"

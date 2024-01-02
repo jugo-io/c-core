@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_USE_OBJECTS_API
+#ifdef PUBNUB_USE_OBJECTS_API
 
 #include "pubnub_internal.h"
 #include "pubnub_version.h"
@@ -103,7 +103,7 @@ enum pubnub_res pbcc_getall_uuidmetadata_prep(
     if (count != pbccNotSet) { ADD_URL_PARAM(qparam, count, count == pbccTrue ? "true" : "false"); }
 
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -112,11 +112,11 @@ enum pubnub_res pbcc_getall_uuidmetadata_prep(
     
     if (include) { ADD_URL_PARAM(qparam, include, include); }
     
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubSendViaGET, true);
         if (rslt != PNR_OK) {
@@ -158,7 +158,7 @@ enum pubnub_res pbcc_set_uuidmetadata_prep(
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -166,11 +166,11 @@ enum pubnub_res pbcc_set_uuidmetadata_prep(
 #endif
     if (include) { ADD_URL_PARAM(qparam, include, include); }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, user_obj, pubnubUsePATCH, true);
         if (rslt != PNR_OK) {
@@ -212,7 +212,7 @@ enum pubnub_res pbcc_get_uuidmetadata_prep(
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -221,11 +221,11 @@ enum pubnub_res pbcc_get_uuidmetadata_prep(
 
     if (include) { ADD_URL_PARAM(qparam, include, include); }
     
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubSendViaGET, true);
         if (rslt != PNR_OK) {
@@ -261,18 +261,18 @@ enum pubnub_res pbcc_remove_uuidmetadata_prep(struct pbcc_context* pb, char cons
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
     ADD_URL_AUTH_PARAM(pb, qparam, auth);
 #endif
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubUseDELETE, true);
         if (rslt != PNR_OK) {
@@ -317,7 +317,7 @@ enum pubnub_res pbcc_getall_channelmetadata_prep(struct pbcc_context* pb,
 
     if (count != pbccNotSet) { ADD_URL_PARAM(qparam, count, count == pbccTrue ? "true" : "false"); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -325,11 +325,11 @@ enum pubnub_res pbcc_getall_channelmetadata_prep(struct pbcc_context* pb,
 #endif
     if (include) { ADD_URL_PARAM(qparam, include, include); }
     
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubSendViaGET, true);
         if (rslt != PNR_OK) {
@@ -372,7 +372,7 @@ enum pubnub_res pbcc_set_channelmetadata_prep(struct pbcc_context* pb,
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -381,11 +381,11 @@ enum pubnub_res pbcc_set_channelmetadata_prep(struct pbcc_context* pb,
 
     if (include) { ADD_URL_PARAM(qparam, include, include); }
     
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, channel_metadata_obj, pubnubUsePATCH, true);
         if (rslt != PNR_OK) {
@@ -430,7 +430,7 @@ enum pubnub_res pbcc_get_channelmetadata_prep(struct pbcc_context* pb,
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -439,11 +439,11 @@ enum pubnub_res pbcc_get_channelmetadata_prep(struct pbcc_context* pb,
 
     if (include) { ADD_URL_PARAM(qparam, include, include); }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubSendViaGET, true);
         if (rslt != PNR_OK) {
@@ -483,18 +483,18 @@ enum pubnub_res pbcc_remove_channelmetadata_prep(struct pbcc_context* pb, char c
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
     ADD_URL_AUTH_PARAM(pb, qparam, auth);
 #endif
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubUseDELETE, true);
         if (rslt != PNR_OK) {
@@ -543,7 +543,7 @@ enum pubnub_res pbcc_get_memberships_prep(struct pbcc_context* pb,
     if (end) { ADD_URL_PARAM(qparam, end, end); }
     if (count != pbccNotSet) { ADD_URL_PARAM(qparam, count, count == pbccTrue ? "true" : "false"); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -552,11 +552,11 @@ enum pubnub_res pbcc_get_memberships_prep(struct pbcc_context* pb,
 
     if (include) { ADD_URL_PARAM(qparam, include, include); }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubSendViaGET, true);
         if (rslt != PNR_OK) {
@@ -598,7 +598,7 @@ enum pubnub_res pbcc_set_memberships_prep(struct pbcc_context* pb,
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -607,11 +607,11 @@ enum pubnub_res pbcc_set_memberships_prep(struct pbcc_context* pb,
 
     if (include) { ADD_URL_PARAM(qparam, include, include); }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, set_obj, pubnubUsePATCH, true);
         if (rslt != PNR_OK) {
@@ -664,7 +664,7 @@ enum pubnub_res pbcc_get_members_prep(struct pbcc_context* pb,
     if (end) { ADD_URL_PARAM(qparam, end, end); }
     if (count != pbccNotSet) { ADD_URL_PARAM(qparam, count, count == pbccTrue ? "true" : "false"); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -673,11 +673,11 @@ enum pubnub_res pbcc_get_members_prep(struct pbcc_context* pb,
 
     if (include) { ADD_URL_PARAM(qparam, include, include); }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubSendViaGET, true);
         if (rslt != PNR_OK) {
@@ -720,7 +720,7 @@ enum pubnub_res pbcc_set_members_prep(struct pbcc_context* pb,
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -729,11 +729,11 @@ enum pubnub_res pbcc_set_members_prep(struct pbcc_context* pb,
 
     if (include) { ADD_URL_PARAM(qparam, include, include); }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, set_obj, pubnubUsePATCH, true);
         if (rslt != PNR_OK) {

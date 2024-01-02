@@ -1,7 +1,7 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 #include "pubnub_internal.h"
 
-#if PUBNUB_USE_ADVANCED_HISTORY
+#ifdef PUBNUB_USE_ADVANCED_HISTORY
 #include "pubnub_memory_block.h"
 #include "pubnub_advanced_history.h"
 #include "pubnub_json_parse.h"

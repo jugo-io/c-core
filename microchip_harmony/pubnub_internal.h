@@ -7,7 +7,7 @@
 #include "tcpip.h"
 
 
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
 #include "net/pres/net_pres_socketapi.h"
 
 typedef NET_PRES_SKT_HANDLE_T pb_socket_t;

@@ -14,13 +14,13 @@
 #endif
 
 #include <stdint.h>
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
 #include <time.h>
 #endif
 
 #define DNS_PORT 53
 
-#if PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_TRACE
+#ifdef PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_TRACE
 #define TRACE_SOCKADDR(str, addr, sockaddr_size)                               \
     do {                                                                       \
         char M_h_[50];                                                         \
@@ -54,7 +54,7 @@ int send_dns_query(pb_socket_t            skt,
         sockaddr_size = sizeof(struct sockaddr_in);
         ((struct sockaddr_in*)dest)->sin_port = htons(DNS_PORT);
         break;
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     case AF_INET6:
         sockaddr_size = sizeof(struct sockaddr_in6);
         ((struct sockaddr_in6*)dest)->sin6_port = htons(DNS_PORT);
@@ -84,7 +84,7 @@ int send_dns_query(pb_socket_t            skt,
     return 0;
 }
 
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 #define P_ADDR_IPV6_ARGUMENT , &addr_ipv6
 #else
 #define P_ADDR_IPV6_ARGUMENT
@@ -100,7 +100,7 @@ int read_dns_response(pb_socket_t skt,
     int                        msg_size;
     unsigned                   sockaddr_size;
     struct pubnub_ipv4_address addr_ipv4 = {{0}};
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     struct pubnub_ipv6_address addr_ipv6 = {{0}};
 #endif
     PUBNUB_ASSERT(SOCKET_INVALID != skt);
@@ -110,7 +110,7 @@ int read_dns_response(pb_socket_t skt,
         sockaddr_size = sizeof(struct sockaddr_in);
         ((struct sockaddr_in*)dest)->sin_port = htons(DNS_PORT);
         break;
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     case AF_INET6:
         sockaddr_size = sizeof(struct sockaddr_in6);
         ((struct sockaddr_in6*)dest)->sin6_port = htons(DNS_PORT);
@@ -127,7 +127,7 @@ int read_dns_response(pb_socket_t skt,
     if (msg_size <= 0) {
         return socket_would_block() ? +1 : -1;
     }
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     time(&spare_addresses->time_of_the_last_dns_query);
 #endif
     if (pbdns_pick_resolved_addresses(buf,
@@ -143,7 +143,7 @@ int read_dns_response(pb_socket_t skt,
                sizeof addr_ipv4.ipv4);
         resolved_addr->sa_family = AF_INET;
     }
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     else {
         memcpy(((struct sockaddr_in6*)resolved_addr)->sin6_addr.s6_addr,
                addr_ipv6.ipv6,

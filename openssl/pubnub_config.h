@@ -45,7 +45,7 @@
  */
 #define PUBNUB_DYNAMIC_REPLY_BUFFER 1
 
-#if !PUBNUB_DYNAMIC_REPLY_BUFFER
+#ifndef PUBNUB_DYNAMIC_REPLY_BUFFER
 
 #ifndef PUBNUB_REPLY_MAXLEN
 /** Maximum length of the HTTP reply when using a static buffer. The
@@ -117,9 +117,9 @@
  */
 #define PUBNUB_USE_MULTIPLE_ADDRESSES 1
 
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
 #define PUBNUB_MAX_IPV4_ADDRESSES 2
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 #define PUBNUB_MAX_IPV6_ADDRESSES 2
 #endif
 #endif /* PUBNUB_USE_MULTIPLE_ADDRESSES */
@@ -129,7 +129,7 @@
 #define PUBNUB_SET_DNS_SERVERS 1
 #endif
 
-#if PUBNUB_SET_DNS_SERVERS
+#ifdef PUBNUB_SET_DNS_SERVERS
 /** If true (!=0), enable support for switching between DNS servers */
 #define PUBNUB_CHANGE_DNS_SERVERS 1
 #endif
@@ -138,7 +138,7 @@
 
 /** Maximum number of consecutive retries when sending DNS query in a single transaction */
 #define PUBNUB_MAX_DNS_QUERIES 3
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 /** Maximum number of DNS servers list rotation in a single transaction */
 #define PUBNUB_MAX_DNS_ROTATION 3
 #endif /* PUBNUB_CHANGE_DNS_SERVERS */
@@ -154,7 +154,7 @@
 #define PUBNUB_USE_GZIP_COMPRESSION 1
 #endif
 
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
 /* Maximum compressed message length allowed. Could be shortened by the user */
 #define PUBNUB_COMPRESSED_MAXLEN 32000
 #endif

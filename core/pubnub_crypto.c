@@ -33,7 +33,7 @@ static pubnub_bymebl_t null_block() {
 
 int pbcrypto_signature(struct pbcc_context* pbcc, char const* channel, char const* msg, char* signature, size_t n)
 {
-#if !PUBNUB_CRYPTO_API
+#ifndef PUBNUB_CRYPTO_API
     return -1;
 #else
     PBMD5_CTX md5;
@@ -94,14 +94,14 @@ static int cipher_hash(char const* cipher_key, uint8_t hash[33])
 
 static int memory_encode(pubnub_bymebl_t buffer, char* base64_str, unsigned char* iv, size_t* n) 
 {
-#if PUBNUB_RAND_INIT_VECTOR
+#ifdef PUBNUB_RAND_INIT_VECTOR
     memmove(buffer.ptr + 16, buffer.ptr, buffer.size);
     memcpy(buffer.ptr, iv, 16);
     buffer.size += 16;
     buffer.ptr[buffer.size] = '\0';
 #endif
 
-#if PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
+#ifdef PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
     PUBNUB_LOG_DEBUG("\nbytes before encoding iv + encrypted msg = [");
     for (int i = 0; i < (int)buffer.size; i++) {
         PUBNUB_LOG_DEBUG("%d ", buffer.ptr[i]);
@@ -134,7 +134,7 @@ int pubnub_encrypt(char const* cipher_key, pubnub_bymebl_t msg, char* base64_str
     uint8_t key[33];
     int result;
     unsigned char iv[17] = "0123456789012345";
-#if PUBNUB_RAND_INIT_VECTOR
+#ifdef PUBNUB_RAND_INIT_VECTOR
     int rand_status = RAND_bytes(iv, 16);
     PUBNUB_ASSERT_OPT(rand_status == 1);
 #endif
@@ -157,7 +157,7 @@ int pubnub_encrypt_buffered(char const* cipher_key, pubnub_bymebl_t msg, char* b
 {
     uint8_t key[33];
     unsigned char iv[17] = "0123456789012345";
-#if PUBNUB_RAND_INIT_VECTOR
+#ifdef PUBNUB_RAND_INIT_VECTOR
     int rand_status = RAND_bytes(iv, 16);
     PUBNUB_ASSERT_OPT(rand_status == 1);
 #endif
@@ -182,7 +182,7 @@ int pubnub_decrypt(char const* cipher_key, char const* base64_str, pubnub_bymebl
     cipher_hash(cipher_key, key);
 
     decoded = pbbase64_decode_alloc_std_str(base64_str);
-    #if PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
+    #ifdef PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
     PUBNUB_LOG_DEBUG("\nbytes after decoding base64 string = [");
     for (size_t i = 0; i < decoded.size; i++) {
         PUBNUB_LOG_DEBUG("%d ", decoded.ptr[i]);
@@ -193,7 +193,7 @@ int pubnub_decrypt(char const* cipher_key, char const* base64_str, pubnub_bymebl
     if (decoded.ptr != NULL) {
         int result;
 
-#if PUBNUB_RAND_INIT_VECTOR
+#ifdef PUBNUB_RAND_INIT_VECTOR
         memcpy(iv, decoded.ptr, 16);
         memmove(decoded.ptr, decoded.ptr + 16, decoded.size - 16);
         decoded.size = decoded.size - 16;
@@ -212,7 +212,7 @@ int pubnub_decrypt(char const* cipher_key, char const* base64_str, pubnub_bymebl
 int pubnub_decrypt_buffered(char const* cipher_key, char const* base64_str, pubnub_bymebl_t* data, pubnub_bymebl_t* buffer)
 {
     if (0 == pbbase64_decode_std_str(base64_str, buffer)) {
-        #if PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
+        #ifdef PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
         PUBNUB_LOG_DEBUG("\nbytes after decoding base64 string = [");
         for (size_t i = 0; i < buffer->size; i++) {
             PUBNUB_LOG_DEBUG("%d ", buffer->ptr[i]);
@@ -224,7 +224,7 @@ int pubnub_decrypt_buffered(char const* cipher_key, char const* base64_str, pubn
         uint8_t key[33];
 
         cipher_hash(cipher_key, key);
-#if PUBNUB_RAND_INIT_VECTOR
+#ifdef PUBNUB_RAND_INIT_VECTOR
         memcpy(iv, buffer->ptr, 16);
         memmove(buffer->ptr, buffer->ptr + 16, buffer->size - 16);
         buffer->size = buffer->size - 16;
@@ -247,7 +247,7 @@ pubnub_bymebl_t pubnub_decrypt_alloc(char const* cipher_key, char const* base64_
     cipher_hash(cipher_key, key);
     decoded = pbbase64_decode_alloc_std_str(base64_str);
     if (decoded.ptr != NULL) {
-#if PUBNUB_RAND_INIT_VECTOR
+#ifdef PUBNUB_RAND_INIT_VECTOR
         memcpy(iv, decoded.ptr, 16);
         memmove(decoded.ptr, decoded.ptr + 16, decoded.size - 16);
         decoded.size = decoded.size - 16;
@@ -406,7 +406,7 @@ enum pubnub_res pubnub_set_secret_key(pubnub_t* p, char const* secret_key)
 {
     PUBNUB_ASSERT_OPT(p != NULL);
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     pubnub_mutex_lock(p->monitor);
     p->core.secret_key = secret_key;
     pubnub_mutex_unlock(p->monitor);
@@ -616,7 +616,7 @@ enum pubnub_res pn_gen_pam_v2_sign(pubnub_t* p, char const* qs_to_sign, char con
     }
     PUBNUB_LOG_DEBUG("\nv2 str_to_sign = %s\n", str_to_sign);
     char* part_sign = (char*)"";
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     part_sign = pn_pam_hmac_sha256_sign(p->core.secret_key, str_to_sign);
     if (NULL == part_sign) { sign_status = PNR_CRYPTO_NOT_SUPPORTED; }
 #else
@@ -639,14 +639,14 @@ enum pubnub_res pn_gen_pam_v3_sign(pubnub_t* p, char const* qs_to_sign, char con
         method_verb = (char*)"GET";
         break;
     case pubnubSendViaPOST:
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
     case pubnubSendViaPOSTwithGZIP:
 #endif
         method_verb = (char*)"POST";
         hasBody = true;
         break;
     case pubnubUsePATCH:
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
     case pubnubUsePATCHwithGZIP:
 #endif
         method_verb = (char*)"PATCH";
@@ -672,7 +672,7 @@ enum pubnub_res pn_gen_pam_v3_sign(pubnub_t* p, char const* qs_to_sign, char con
     }
     PUBNUB_LOG_DEBUG("\nv3 str_to_sign = %s\n", str_to_sign);
     char* part_sign = (char*)"";
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     part_sign = pn_pam_hmac_sha256_sign(p->core.secret_key, str_to_sign);
     if (NULL == part_sign) { sign_status = PNR_CRYPTO_NOT_SUPPORTED; }
 #else
@@ -798,7 +798,7 @@ static pubnub_bymebl_t provider_encrypt(struct pubnub_crypto_provider_t const* p
 
     memcpy(result.ptr + header_size, encrypted_data->data.ptr, encrypted_data->data.size);
 
-    #if PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
+    #ifdef PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
     PUBNUB_LOG_DEBUG("\nbytes encrypted = [");
     for (size_t i = 0; i < result.size; i++) {
         PUBNUB_LOG_DEBUG("%d ", result.ptr[i]);
@@ -855,7 +855,7 @@ static pubnub_bymebl_t provider_decrypt(struct pubnub_crypto_provider_t const* p
         return result;
     }
 
-    #if PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
+    #ifdef PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
     PUBNUB_LOG_DEBUG("\nbytes to decrypt = [");
     for (size_t i = 0; i < to_decrypt.size; i++) {
         PUBNUB_LOG_DEBUG("%d ", to_decrypt.ptr[i]);

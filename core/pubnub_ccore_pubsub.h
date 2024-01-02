@@ -18,7 +18,7 @@
     responses for publish and subscribe transactions.
 */
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
 
 // assuming 50 bytes per message
 #define PUBNUB_MAX_DECRYPTED_MESSAGES (PUBNUB_BUF_MAXLEN / 50) 
@@ -52,7 +52,7 @@ struct pbcc_context {
     /** Pointer to the presence state */
     char const* state;
 
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
     /** The last received subscribe V2 region */
     int region;
 #endif
@@ -68,12 +68,12 @@ struct pbcc_context {
      */
     size_t http_buf_len;
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     /** Holds encrypted message */
     char encrypted_msg_buf[PUBNUB_BUF_MAXLEN];
 #endif
 
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
     /** Buffer for compressed message */
     char gzip_msg_buf[PUBNUB_COMPRESSED_MAXLEN];
     
@@ -81,7 +81,7 @@ struct pbcc_context {
     size_t gzip_msg_len;
 #endif
 
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
     /** The length of the decompressed data currently in the decompressing
      * buffer ("scratch").
      */
@@ -92,15 +92,15 @@ struct pbcc_context {
      */
     unsigned http_content_len;
 
-#if PUBNUB_DYNAMIC_REPLY_BUFFER
+#ifdef PUBNUB_DYNAMIC_REPLY_BUFFER
     char* http_reply;
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
     char* decomp_http_reply;
 #endif /* PUBNUB_RECEIVE_GZIP_RESPONSE */
 #else
     /** The contents of a HTTP reply/reponse */
     char http_reply[PUBNUB_REPLY_MAXLEN + 1];
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
     /** Auxiliary buffer for unpacking(decompresing) data from HTTP reply buffer
      */
     char decomp_http_reply[PUBNUB_REPLY_MAXLEN + 1];
@@ -119,7 +119,7 @@ struct pbcc_context {
     */
     unsigned chan_ofs, chan_end;
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     /** Secret key to use for encryption/decryption */
     char const* secret_key;
 
@@ -252,7 +252,7 @@ struct pbcc_context {
         APPEND_URL_PARAM_M(pbc, name, v_, separator);                          \
     }
 
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
 #define NOT_COMPRESSED_AND(pbc) ((pbc)->gzip_msg_len == 0) &&
 #define CHECK_IF_GZIP_COMPRESSED(pbc, message)                                 \
     if ((pbc)->gzip_msg_len != 0) {                                            \

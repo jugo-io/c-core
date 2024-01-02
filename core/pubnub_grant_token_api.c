@@ -341,7 +341,7 @@ char* pubnub_parse_token(pubnub_t* pb, char const* token){
         return NULL;
     }
 
-    #if PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
+    #ifdef PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
     PUBNUB_LOG_DEBUG("\nbytes after decoding base64 string = [");
     for (size_t i = 0; i < decoded.size; i++) {
         PUBNUB_LOG_DEBUG("%d ", decoded.ptr[i]);

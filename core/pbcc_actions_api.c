@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_USE_ACTIONS_API
+#ifdef PUBNUB_USE_ACTIONS_API
 
 #include "pubnub_internal.h"
 #include "pubnub_version.h"
@@ -114,18 +114,18 @@ enum pubnub_res pbcc_add_action_prep(struct pbcc_context* pb,
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
     ADD_URL_AUTH_PARAM(pb, qparam, auth);
 #endif
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMETERS(pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, value, pubnubSendViaPOST, true);
         if (rslt != PNR_OK) {
@@ -275,7 +275,7 @@ enum pubnub_res pbcc_remove_action_prep(struct pbcc_context* pb,
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL){
         ADD_URL_AUTH_PARAM(pb, qparam, auth);
     }
@@ -284,11 +284,11 @@ enum pubnub_res pbcc_remove_action_prep(struct pbcc_context* pb,
     ADD_URL_AUTH_PARAM(pb, qparam, auth);
 #endif
     
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMETERS(pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubUseDELETE, true);
         if (rslt != PNR_OK) {
@@ -327,7 +327,7 @@ enum pubnub_res pbcc_get_actions_prep(struct pbcc_context* pb,
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -337,11 +337,11 @@ enum pubnub_res pbcc_get_actions_prep(struct pbcc_context* pb,
     if (end) { ADD_URL_PARAM(qparam, end, end); }
     if (limit != 0) { ADD_URL_PARAM_SIZET(qparam, limit, limit); }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMETERS(pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubSendViaGET, true);
         if (rslt != PNR_OK) {
@@ -412,18 +412,18 @@ enum pubnub_res pbcc_get_actions_more_prep(struct pbcc_context* pb)
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
     ADD_URL_AUTH_PARAM(pb, qparam, auth);
 #endif
     
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMETERS(pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubSendViaGET, true);
         if (rslt != PNR_OK) {
@@ -462,7 +462,7 @@ enum pubnub_res pbcc_history_with_actions_prep(struct pbcc_context* pb,
     URL_PARAMS_INIT(qparam, PUBNUB_MAX_URL_PARAMS);
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key == NULL) { ADD_URL_AUTH_PARAM(pb, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -472,11 +472,11 @@ enum pubnub_res pbcc_history_with_actions_prep(struct pbcc_context* pb,
     if (end) { ADD_URL_PARAM(qparam, end, end); }
     if (limit != 0) { ADD_URL_PARAM_SIZET(qparam, limit, limit); }
     
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMETERS(pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, "", pubnubSendViaGET, true);
         if (rslt != PNR_OK) {

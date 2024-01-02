@@ -3,7 +3,7 @@
 #define      INC_PUBNUB_MUTEX
 
 
-#if PUBNUB_THREADSAFE
+#ifdef PUBNUB_THREADSAFE
 #include "pbpal_mutex.h"
 
 

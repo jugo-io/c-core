@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "pubnub_log.h": "c",
+        "pubnub_internal.h": "c",
+        "pubnub_ntf_callback.h": "c",
+        "pbaes256.h": "c",
+        "pbbase64.h": "c",
+        "pubnub_crypto.h": "c",
+        "pbsha256.h": "c",
+        "stdbool.h": "c",
+        "pubnub_config.h": "c",
+        "pubnub_ccore_pubsub.h": "c",
+        "string.h": "c"
+    }
+}

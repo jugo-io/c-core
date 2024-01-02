@@ -25,7 +25,7 @@
  *
  **************************************************************************/
 
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
 
 #include "miniz_tdef.h"
 #include "miniz.h"

@@ -36,14 +36,14 @@ pubnub_t* pubnub_init(pubnub_t* p, const char* publish_key, const char* subscrib
         p->origin = PUBNUB_ORIGIN;
         p->port = INITIAL_PORT_VALUE;
     }
-#if PUBNUB_BLOCKING_IO_SETTABLE
+#ifdef PUBNUB_BLOCKING_IO_SETTABLE
 #if defined(PUBNUB_CALLBACK_API)
     p->options.use_blocking_io = false;
 #else
     p->options.use_blocking_io = true;
 #endif
 #endif /* PUBNUB_BLOCKING_IO_SETTABLE */
-#if PUBNUB_USE_AUTO_HEARTBEAT
+#ifdef PUBNUB_USE_AUTO_HEARTBEAT
     p->thumperIndex = UNASSIGNED;
     p->channelInfo.channel = NULL;
     p->channelInfo.channel_group = NULL;
@@ -52,7 +52,7 @@ pubnub_t* pubnub_init(pubnub_t* p, const char* publish_key, const char* subscrib
     p->state                          = PBS_IDLE;
     p->trans                          = PBTT_NONE;
     p->options.use_http_keep_alive    = true;
-#if PUBNUB_USE_IPV6 && defined(PUBNUB_CALLBACK_API)
+#ifdef PUBNUB_USE_IPV6 && defined(PUBNUB_CALLBACK_API)
     /* Connectivity type(true-Ipv6/false-Ipv4) chosen on given contex.
        Ipv4 by default.
      */
@@ -60,17 +60,17 @@ pubnub_t* pubnub_init(pubnub_t* p, const char* publish_key, const char* subscrib
 #endif
     p->flags.started_while_kept_alive = false;
     p->method                         = pubnubSendViaGET;
-#if PUBNUB_ADVANCED_KEEP_ALIVE
+#ifdef PUBNUB_ADVANCED_KEEP_ALIVE
     p->keep_alive.max     = 1000;
     p->keep_alive.timeout = 50;
 #endif
     pbpal_init(p);
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
     p->proxy_type        = pbproxyNONE;
     p->proxy_hostname[0] = '\0';
 #if defined(PUBNUB_CALLBACK_API)
     memset(&(p->proxy_ipv4_address), 0, sizeof p->proxy_ipv4_address);
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     memset(&(p->proxy_ipv6_address), 0, sizeof p->proxy_ipv6_address);
 #endif
 #endif /* defined(PUBNUB_CALLBACK_API) */
@@ -82,10 +82,10 @@ pubnub_t* pubnub_init(pubnub_t* p, const char* publish_key, const char* subscrib
     p->realm[0]                 = '\0'; 
 #endif /* PUBNUB_PROXY_API */
 
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
     p->data_compressed = compressionNONE;
 #endif
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     p->core.crypto_module = NULL;
 #endif
 
@@ -381,7 +381,7 @@ int pubnub_origin_set(pubnub_t* pb, char const* origin)
         }
 
         pubnub_mutex_lock(pb->monitor);
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
         pbpal_multiple_addresses_reset_counters(&pb->spare_addresses);
 #endif
         pb->origin = origin;

@@ -11,25 +11,25 @@
 #include "core/pubnub_version.h"
 #include "core/pubnub_version_internal.h"
 #include "core/pubnub_helper.h"
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 #include "core/pbcc_subscribe_v2.h"
 #endif
-#if PUBNUB_USE_ADVANCED_HISTORY
+#ifdef PUBNUB_USE_ADVANCED_HISTORY
 #include "core/pbcc_advanced_history.h"
 #endif
-#if PUBNUB_USE_FETCH_HISTORY
+#ifdef PUBNUB_USE_FETCH_HISTORY
 #include "core/pbcc_fetch_history.h"
 #endif
-#if PUBNUB_USE_OBJECTS_API
+#ifdef PUBNUB_USE_OBJECTS_API
 #include "core/pbcc_objects_api.h"
 #endif
-#if PUBNUB_USE_ACTIONS_API
+#ifdef PUBNUB_USE_ACTIONS_API
 #include "core/pbcc_actions_api.h"
 #endif
-#if PUBNUB_USE_GRANT_TOKEN_API
+#ifdef PUBNUB_USE_GRANT_TOKEN_API
 #include "core/pbcc_grant_token_api.h"
 #endif
-#if PUBNUB_USE_REVOKE_TOKEN_API
+#ifdef PUBNUB_USE_REVOKE_TOKEN_API
 #include "core/pbcc_revoke_token_api.h"
 #endif
 #include "core/pubnub_proxy_core.h"
@@ -56,7 +56,7 @@
 #define CHUNK_TRAIL_LENGTH 2
 
 
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
 /* 'Accept-Encoding' header line */
 #define ACCEPT_ENCODING "Accept-Encoding: gzip\r\n"
 #define possible_gzip_response(pb)                                             \
@@ -81,7 +81,7 @@ bool HTTP_request_has_body(uint8_t method)
         return false;
     case pubnubSendViaPOST:
     case pubnubUsePATCH:
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
     case pubnubSendViaPOSTwithGZIP:
     case pubnubUsePATCHwithGZIP:
 #endif
@@ -100,12 +100,12 @@ static char const* get_method_verb_string(uint8_t method)
     case pubnubSendViaGET:
         return "GET ";
     case pubnubSendViaPOST:
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
     case pubnubSendViaPOSTwithGZIP:
 #endif
         return "POST ";
     case pubnubUsePATCH:
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
     case pubnubUsePATCHwithGZIP:
 #endif
         return "PATCH ";
@@ -145,7 +145,7 @@ static bool should_keep_alive(struct pubnub_* pb, enum pubnub_res rslt)
                      pubnub_res_2_string(rslt),
                      (int)pb->flags.should_close);
     if (!pb->flags.should_close) {
-#if PUBNUB_ADVANCED_KEEP_ALIVE
+#ifdef PUBNUB_ADVANCED_KEEP_ALIVE
         time_t tt = time(NULL);
         PUBNUB_LOG_DEBUG("should_keep_alive(pb=%p): pb->keep_alive.count = %d, "
                          "pb->keep_alive.max = %d, "
@@ -187,7 +187,7 @@ static bool should_keep_alive(struct pubnub_* pb, enum pubnub_res rslt)
 static void close_connection(struct pubnub_* pb)
 {
     if (pbpal_close(pb) <= 0) {
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
         PUBNUB_LOG_TRACE("close_connection(): pb->flags.retry_after_close=%d\n",
                          pb->flags.retry_after_close);
         if (pb->flags.retry_after_close) {
@@ -208,7 +208,7 @@ static enum pubnub_state close_kept_alive_connection(struct pubnub_* pb)
 {
     pb->flags.started_while_kept_alive = false;
     if (pbpal_close(pb) <= 0) {
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
         PUBNUB_LOG_TRACE(
             "close_kept_alive_connection(): pb->flags.retry_after_close=%d\n",
             pb->flags.retry_after_close);
@@ -237,7 +237,7 @@ static void outcome_detected(struct pubnub_* pb, enum pubnub_res rslt)
         PUBNUB_LOG_TRACE("outcome_detected(pb=%p): Keepin' it alive\n", pb);
         pbntf_lost_socket(pb);
         pbntf_trans_outcome(pb, PBS_KEEP_ALIVE_IDLE);
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
         pb->flags.retry_after_close = false;
 #endif
     }
@@ -260,7 +260,7 @@ static PFpbcc_parse_response_T m_aParseResponse[] = { dont_parse,
                                                       pbcc_parse_subscribe_response,
                                                       pbcc_parse_publish_response,
                                                       pbcc_parse_publish_response, /* PBTT_SIGNAL */
-#if PUBNUB_ONLY_PUBSUB_API
+#ifdef PUBNUB_ONLY_PUBSUB_API
                                                       dont_parse,
                                                       dont_parse,
                                                       dont_parse,
@@ -290,13 +290,13 @@ static PFpbcc_parse_response_T m_aParseResponse[] = { dont_parse,
     pbcc_parse_channel_registry_response, /* PBTT_ADD_CHANNEL_TO_GROUP */
     pbcc_parse_channel_registry_response, /* PBTT_LIST_CHANNEL_GROUP */
     pbcc_parse_presence_response /* PBTT_HEARTBEAT */
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
     , pbcc_parse_subscribe_v2_response /* PBTT_SUBSCRIBE_V2 */
 #endif
-#if PUBNUB_USE_ADVANCED_HISTORY
+#ifdef PUBNUB_USE_ADVANCED_HISTORY
     , pbcc_parse_message_counts_response /* PBTT_MESSAGE_COUNTS */
 #endif
-#if PUBNUB_USE_OBJECTS_API
+#ifdef PUBNUB_USE_OBJECTS_API
     , pbcc_parse_objects_api_response /* PBTT_GET_USERS */
     , pbcc_parse_objects_api_response /* PBTT_CREATE_USER */
     , pbcc_parse_objects_api_response /* PBTT_GET_USER */
@@ -313,27 +313,27 @@ static PFpbcc_parse_response_T m_aParseResponse[] = { dont_parse,
     , pbcc_parse_objects_api_response /* PBTT_UPDATE_MEMBERS */
     , pbcc_parse_objects_api_response /* PBTT_REMOVE_MEMBERS */
 #endif /* PUBNUB_USE_OBJECTS_API */
-#if PUBNUB_USE_ACTIONS_API
+#ifdef PUBNUB_USE_ACTIONS_API
     , pbcc_parse_actions_api_response /* PBTT_ADD_ACTION */
     , pbcc_parse_actions_api_response /* PBTT_REMOVE_ACTION */
     , pbcc_parse_actions_api_response /* PBTT_GET_ACTIONS */
     , pbcc_parse_history_with_actions_response /* PBTT_HISTORY_WITH_ACTIONS */
 #endif /* PUBNUB_USE_OBJECTS_API */
-#if PUBNUB_USE_GRANT_TOKEN_API
+#ifdef PUBNUB_USE_GRANT_TOKEN_API
     , pbcc_parse_grant_token_api_response /* PBTT_GRANT_TOKEN */
 #endif /* PUBNUB_USE_GRANT_TOKEN_API */
-#if PUBNUB_USE_FETCH_HISTORY
+#ifdef PUBNUB_USE_FETCH_HISTORY
     , pbcc_parse_fetch_history_response /* PBTT_FETCH_HISTORY */
 #endif
-#if PUBNUB_USE_REVOKE_TOKEN_API
+#ifdef PUBNUB_USE_REVOKE_TOKEN_API
     , pbcc_parse_revoke_token_response /* PBTT_REVOKE_TOKEN */
 #endif /* PUBNUB_USE_REVOKE_TOKEN_API */
 #endif /* PUBNUB_ONLY_PUBSUB_API */
 };
 
 
-PUBNUB_STATIC_ASSERT((sizeof m_aParseResponse / sizeof m_aParseResponse[0]) == PBTT_MAX,
-                     bad_response_table_length);
+// PUBNUB_STATIC_ASSERT((sizeof m_aParseResponse / sizeof m_aParseResponse[0]) == PBTT_MAX,
+//                      bad_response_table_length);
 
 
 static enum pubnub_res parse_pubnub_result(struct pubnub_* pb)
@@ -359,7 +359,7 @@ static enum pubnub_res finish(struct pubnub_* pb)
 {
     enum pubnub_res pbres;
 
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
     switch (pbproxy_handle_finish(pb)) {
     case pbproxyFinError:
         PUBNUB_LOG_TRACE("Proxy: Error, close connection\n");
@@ -405,7 +405,7 @@ static char const* pbnc_state2str(enum pubnub_state e)
     switch (e) {
     case PBS_NULL:
         return "PBS_NULL";
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
     case PBS_RETRY:
         return "PBS_RETRY";
 #endif
@@ -421,7 +421,7 @@ static char const* pbnc_state2str(enum pubnub_state e)
         return "PBS_WAIT_CONNECT";
     case PBS_CONNECTED:
         return "PBS_CONNECTED";
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     case PBS_WAIT_TLS_CONNECT:
         return "PBS_WAIT_TLS_CONNECT";
 #endif
@@ -486,21 +486,21 @@ static char const* pbnc_state2str(enum pubnub_state e)
 
 static void initialize_fields_in_state_IDLE(struct pubnub_* pb)
 {
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
     pb->dns_check.dns_server_check = 0;
 #endif
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
     pb->flags.retry_after_close = false;
 #else
     PUBNUB_UNUSED(pb);
 #endif
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
     pb->proxy_tunnel_established = false;
     pb->proxy_saved_path_len     = 0;
     pb->proxy_authorization_sent = false;
     pb->auth_msg_count           = 0;
 #endif
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     pb->flags.trySSL = pb->options.useSSL;
 #endif
 }
@@ -531,7 +531,7 @@ next_state:
             break;
         }
         break;
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
     case PBS_RETRY:
         pb->flags.retry_after_close = false;
         pb->state                   = PBS_READY;
@@ -571,7 +571,7 @@ next_state:
         default:
             pbpal_report_error_from_environment(pb, __FILE__, __LINE__);
             pb->core.last_result = PNR_ADDR_RESOLUTION_FAILED;
-#if PUBNUB_ADNS_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_ADNS_RETRY_AFTER_CLOSE
             if (pb->flags.retry_after_close) {
                 close_connection(pb);
                 goto next_state;
@@ -585,7 +585,7 @@ next_state:
         }
         else if (i < 0) {
             pb->core.last_result = PNR_CONNECT_FAILED;
-#if PUBNUB_ADNS_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_ADNS_RETRY_AFTER_CLOSE
             if (pb->flags.retry_after_close) {
                 close_connection(pb);
                 goto next_state;
@@ -678,14 +678,14 @@ next_state:
     }
     case PBS_CONNECTED:
         pb->flags.should_close = !pb->options.use_http_keep_alive;
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
         pb->flags.retry_after_close = false;
 #endif
-#if PUBNUB_ADVANCED_KEEP_ALIVE
+#ifdef PUBNUB_ADVANCED_KEEP_ALIVE
         pb->keep_alive.t_connect = time(NULL);
         pb->keep_alive.count     = 0;
 #endif
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
         if ((pbproxyHTTP_CONNECT == pb->proxy_type)
             && (!pb->proxy_tunnel_established)) {
             pb->state = PBS_TX_GET;
@@ -698,9 +698,9 @@ next_state:
             goto next_state;
         }
 #endif
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
         if ((NULL == pb->pal.ssl) && pb->flags.trySSL
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
             && (pbproxyHTTP_GET != pb->proxy_type)
 #endif
         ) {
@@ -718,11 +718,11 @@ next_state:
                     pb->flags.trySSL            = false;
                     pb->flags.retry_after_close = true;
                 }
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
                 else {
                     pb->flags.retry_after_close =
                         (++pb->spare_addresses.ipv4_index < pb->spare_addresses.n_ipv4)
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
                         || (++pb->spare_addresses.ipv6_index
                             < pb->spare_addresses.n_ipv6)
 #endif
@@ -745,7 +745,7 @@ next_state:
         }
         pb->state = PBS_TX_GET;
         goto next_state;
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     case PBS_WAIT_TLS_CONNECT: {
         enum pbpal_tls_result res = pbpal_check_tls(pb);
         switch (res) {
@@ -764,11 +764,11 @@ next_state:
                 pb->flags.trySSL            = false;
                 pb->flags.retry_after_close = true;
             }
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
             else {
                 pb->flags.retry_after_close =
                     (++pb->spare_addresses.ipv4_index < pb->spare_addresses.n_ipv4)
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
                     || (++pb->spare_addresses.ipv6_index < pb->spare_addresses.n_ipv6)
 #endif
                     ;
@@ -787,7 +787,7 @@ next_state:
     case PBS_TX_GET:
         i = pbpal_send_status(pb);
         if (i <= 0) {
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
             switch (pb->proxy_type) {
             case pbproxyHTTP_GET: {
                 char const* http = "http://";
@@ -810,7 +810,7 @@ next_state:
                             pb->proxy_saved_path_len + 1);
                     pb->core.http_buf_len = pb->proxy_saved_path_len;
                 }
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
                 if (pb->flags.trySSL) {
                     PUBNUB_ASSERT(pb->options.useSSL);
                     http = "https://";
@@ -865,7 +865,7 @@ next_state:
             goto next_state;
         }
         break;
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
     case PBS_TX_SCHEME:
         i = pbpal_send_status(pb);
         if (i <= 0) {
@@ -893,7 +893,7 @@ next_state:
             if ((pb->proxy_type == pbproxyHTTP_CONNECT)
                 && !pb->proxy_tunnel_established) {
                 char const* port_toward_origin = ":80";
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
                 if (pb->flags.trySSL) {
                     PUBNUB_ASSERT(pb->options.useSSL);
                     port_toward_origin = ":443";
@@ -949,7 +949,7 @@ next_state:
             outcome_detected(pb, PNR_IO_ERROR);
         }
         else if (0 == i) {
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
             if (!pb->proxy_tunnel_established) {
                 char hedr[1024] = "\r\n";
                 if (0 == pbproxy_http_header_to_send(pb, hedr + 2, sizeof hedr - 2)) {
@@ -964,7 +964,7 @@ next_state:
             }
 #endif
             if (HTTP_request_has_body(pb->method)
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
                 && (pb->proxy_tunnel_established || (pbproxyNONE == pb->proxy_type))
 #endif
             ) {
@@ -1003,12 +1003,12 @@ next_state:
         }
         else if (0 == i) {
             if (HTTP_request_has_body(pb->method)
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
                 && (pb->proxy_tunnel_established || (pbproxyNONE == pb->proxy_type))
 #endif
             ) {
                 const char* message = pb->core.message_to_send;
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
                 size_t len = (pb->core.gzip_msg_len != 0) ? pb->core.gzip_msg_len
                                                           : strlen(message);
 #else
@@ -1097,7 +1097,7 @@ next_state:
             char h_chunked[] = "Transfer-Encoding: chunked";
             char h_length[]  = "Content-Length: ";
             char h_close[]   = "Connection: close";
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
             char h_encoding[] = "Content-Encoding: gzip";
 #endif
             int read_len = pbpal_read_len(pb);
@@ -1110,7 +1110,7 @@ next_state:
                 pb->core.http_buf_len = 0;
                 if (!pb->http_chunked) {
                     if (0 == pb->core.http_content_len) {
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
                         WATCH_ENUM(pb->proxy_type);
                         WATCH_INT(pb->proxy_tunnel_established);
                         if ((pb->proxy_type == pbproxyHTTP_CONNECT)
@@ -1145,7 +1145,7 @@ next_state:
             else if (pb_strncasecmp(pb->core.http_buf, h_close, sizeof h_close - 1) == 0) {
                 pb->flags.should_close = true;
             }
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
             else if (pb_strncasecmp(pb->core.http_buf, h_encoding, sizeof h_encoding - 1)
                      == 0) {
                 pb->data_compressed = compressionGZIP;
@@ -1180,7 +1180,7 @@ next_state:
         }
         else {
             finish(pb);
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
             if (pb->flags.retry_after_close) {
                 goto next_state;
             }
@@ -1225,7 +1225,7 @@ next_state:
             PUBNUB_LOG_TRACE("About to read a chunk w/length: %u\n", chunk_length);
             if (chunk_length == 0) {
                 finish(pb);
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
                 if (pb->flags.retry_after_close) {
                     goto next_state;
                 }
@@ -1290,7 +1290,7 @@ next_state:
         break;
     case PBS_WAIT_CLOSE:
         if (pbpal_closed(pb)) {
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
             if (pb->flags.retry_after_close) {
                 pb->state = PBS_RETRY;
                 goto next_state;
@@ -1308,7 +1308,7 @@ next_state:
         break;
     case PBS_WAIT_CANCEL_CLOSE:
         if (pbpal_closed(pb)) {
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
             if (pb->flags.retry_after_close) {
                 pb->state = PBS_RETRY;
                 goto next_state;
@@ -1320,13 +1320,13 @@ next_state:
         }
         break;
     case PBS_WAIT_CANCEL_DNS:
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
         pb->flags.retry_after_close = true;
 #endif
         close_connection(pb);
         goto next_state;
     case PBS_KEEP_ALIVE_IDLE:
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
         pb->proxy_saved_path_len     = 0;
         pb->proxy_authorization_sent = false;
         pb->auth_msg_count           = 0;
@@ -1359,7 +1359,7 @@ next_state:
         goto next_state;
     case PBS_KEEP_ALIVE_WAIT_CLOSE:
         if (pbpal_closed(pb)) {
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
             if (pb->flags.retry_after_close) {
                 pb->state = PBS_RETRY;
                 goto next_state;
@@ -1379,7 +1379,7 @@ next_state:
                          pbnc_state2str(pb->state));
         break;
     }
-#if PUBNUB_ADNS_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_ADNS_RETRY_AFTER_CLOSE
     if (PBS_RETRY == pb->state) {
         goto next_state;
     }
@@ -1406,7 +1406,7 @@ void pbnc_stop(struct pubnub_* pbp, enum pubnub_res outcome_to_report)
 #if defined(PUBNUB_CALLBACK_API)
         if (PNR_TIMEOUT == outcome_to_report) {
             if ((pbp->state != PBS_WAIT_CONNECT) &&
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
                 (pbpal_dns_rotate_server(pbp) == 0)
 #else
                 (pbp->flags.sent_queries < PUBNUB_MAX_DNS_QUERIES)

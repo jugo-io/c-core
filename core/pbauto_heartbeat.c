@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_USE_AUTO_HEARTBEAT
+#ifdef PUBNUB_USE_AUTO_HEARTBEAT
 
 #include "pubnub_internal.h"
 
@@ -65,21 +65,21 @@ static int copy_context_settings(pubnub_t* pb_clone, pubnub_t const* pb)
         pb_clone->origin = pb->origin;
     }
     pb_clone->options.use_http_keep_alive = pb->options.use_http_keep_alive;
-#if PUBNUB_USE_IPV6 && defined(PUBNUB_CALLBACK_API)
+#ifdef PUBNUB_USE_IPV6 && defined(PUBNUB_CALLBACK_API)
     pb_clone->options.ipv6_connectivity = pb->options.ipv6_connectivity;
 #endif
-#if PUBNUB_ADVANCED_KEEP_ALIVE
+#ifdef PUBNUB_ADVANCED_KEEP_ALIVE
     pb_clone->keep_alive.max     = pb->keep_alive.max;
     pb_clone->keep_alive.timeout = pb->keep_alive.timeout;
 #endif
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
     pb_clone->proxy_type = pb->proxy_type;
     strcpy(pb_clone->proxy_hostname, pb->proxy_hostname);
 #if defined(PUBNUB_CALLBACK_API)
     memcpy(&(pb_clone->proxy_ipv4_address),
            &(pb->proxy_ipv4_address),
            sizeof pb->proxy_ipv4_address);
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     memcpy(&(pb_clone->proxy_ipv6_address),
            &(pb->proxy_ipv6_address),
            sizeof pb->proxy_ipv6_address);

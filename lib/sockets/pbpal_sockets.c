@@ -40,7 +40,7 @@ void pbpal_init(pubnub_t* pb)
     pb->pal.socket = SOCKET_INVALID;
     pb->sock_state = STATE_NONE;
     buf_setup(pb);
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     pbpal_multiple_addresses_reset_counters(&pb->spare_addresses);
 #endif
 }

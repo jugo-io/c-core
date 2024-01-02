@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_USE_AUTO_HEARTBEAT
+#ifdef PUBNUB_USE_AUTO_HEARTBEAT
 
 #if !defined INC_PBSTR_REMOVE_FROM_LIST
 #define INC_PBSTR_REMOVE_FROM_LIST

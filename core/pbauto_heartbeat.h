@@ -2,7 +2,7 @@
 #if !defined INC_PBAUTO_HEARTBEAT
 #define INC_PBAUTO_HEARTBEAT
 
-#if PUBNUB_USE_AUTO_HEARTBEAT
+#ifdef PUBNUB_USE_AUTO_HEARTBEAT
 #if defined      _WIN32
 typedef DWORD    pubnub_thread_t;
 typedef FILETIME pubnub_timespec_t;

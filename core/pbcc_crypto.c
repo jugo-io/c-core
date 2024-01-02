@@ -184,7 +184,7 @@ pubnub_bymebl_t pbcc_legacy_encrypt(uint8_t const* cipher_key, pubnub_bymebl_t m
 {
     uint8_t key[33];
     unsigned char iv[17] = "0123456789012345";
-#if PUBNUB_RAND_INIT_VECTOR
+#ifdef PUBNUB_RAND_INIT_VECTOR
     int rand_status = RAND_bytes(iv, 16);
     PUBNUB_ASSERT_OPT(rand_status == 1);
 #endif
@@ -192,7 +192,7 @@ pubnub_bymebl_t pbcc_legacy_encrypt(uint8_t const* cipher_key, pubnub_bymebl_t m
     pbcc_cipher_key_hash((uint8_t*)cipher_key, key);
     pubnub_bymebl_t result = pbaes256_encrypt_alloc(msg, key, iv);
 
-    #if PUBNUB_RAND_INIT_VECTOR
+    #ifdef PUBNUB_RAND_INIT_VECTOR
         memmove(result.ptr + 16, result.ptr, result.size);
         memcpy(result.ptr, iv, 16);
         result.size += 16;
@@ -204,14 +204,14 @@ pubnub_bymebl_t pbcc_legacy_encrypt(uint8_t const* cipher_key, pubnub_bymebl_t m
 
 int pbcc_memory_encode(pubnub_bymebl_t buffer, char* base64_str, unsigned char* iv, size_t* n) 
 {
-#if PUBNUB_RAND_INIT_VECTOR
+#ifdef PUBNUB_RAND_INIT_VECTOR
     memmove(buffer.ptr + 16, buffer.ptr, buffer.size);
     memcpy(buffer.ptr, iv, 16);
     buffer.size += 16;
     buffer.ptr[buffer.size] = '\0';
 #endif
 
-#if PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
+#ifdef PUBNUB_LOG_LEVEL >= PUBNUB_LOG_LEVEL_DEBUG
     PUBNUB_LOG_DEBUG("\nbytes before encoding iv + encrypted msg = [");
     for (int i = 0; i < (int)buffer.size; i++) {
         PUBNUB_LOG_DEBUG("%d ", buffer.ptr[i]);
@@ -247,7 +247,7 @@ int pbcc_legacy_decrypt(uint8_t const* cipher_key, pubnub_bymebl_t *result, pubn
     if (to_decrypt.ptr != NULL) {
         PUBNUB_LOG_DEBUG("pbcc_legacy_decrypt: Decrypting data with size size = %zu\n", to_decrypt.size);
 
-#if PUBNUB_RAND_INIT_VECTOR
+#ifdef PUBNUB_RAND_INIT_VECTOR
         memcpy(iv, to_decrypt.ptr, 16);
         memmove(to_decrypt.ptr, to_decrypt.ptr + 16, to_decrypt.size - 16);
         to_decrypt.size = to_decrypt.size - 16;

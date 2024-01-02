@@ -31,7 +31,7 @@ struct SocketWatcherData {
     CRITICAL_SECTION stoplock;
     HANDLE           thread_handle;
     DWORD            thread_id;
-#if PUBNUB_TIMERS_API
+#ifdef PUBNUB_TIMERS_API
     _Guarded_by_(timerlock) pubnub_t* timer_head;
 #endif
     struct pbpal_ntf_callback_queue queue;

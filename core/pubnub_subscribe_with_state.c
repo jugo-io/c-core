@@ -44,18 +44,18 @@ static enum pubnub_res pbcc_subscribe_with_state_prep(struct pbcc_context *p,
     if (p->user_id) { ADD_URL_PARAM(qparam, uuid, p->user_id); }
     if (state) { APPEND_URL_PARAM(qparam, state, state); }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (p->secret_key == NULL) { ADD_URL_AUTH_PARAM(p, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
     ADD_URL_AUTH_PARAM(p, qparam, auth);
 #endif
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMETERS(p, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (p->secret_key != NULL) {
         rslt = pbcc_sign_url(p, "", pubnubSendViaGET, true);
     }

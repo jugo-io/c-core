@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
 
 #include "pubnub_internal.h"
 
@@ -9,7 +9,7 @@
 #include "pubnub_log.h"
 #if defined(PUBNUB_CALLBACK_API)
 #include "lib/pubnub_parse_ipv4_addr.h"
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 #include "lib/pubnub_parse_ipv6_addr.h"
 #endif
 #include "pbpal.h"
@@ -54,13 +54,13 @@ int pubnub_set_proxy_manual(pubnub_t*              p,
      */
     if (0 != pubnub_parse_ipv4_addr(ip_address_or_url, &(p->proxy_ipv4_address))) {
         memset(&(p->proxy_ipv4_address), 0, sizeof p->proxy_ipv4_address);
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
         if (0 != pubnub_parse_ipv6_addr(ip_address_or_url, &(p->proxy_ipv6_address))) {
             memset(&(p->proxy_ipv6_address), 0, sizeof p->proxy_ipv6_address);
         }
 #endif
     }
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     pbpal_multiple_addresses_reset_counters(&p->spare_addresses);
 #endif
 #endif /* defined(PUBNUB_CALLBACK_API) */
@@ -78,10 +78,10 @@ void pubnub_set_proxy_none(pubnub_t* p)
     pubnub_mutex_lock(p->monitor);
 #if defined(PUBNUB_CALLBACK_API)
     memset(&(p->proxy_ipv4_address), 0, sizeof p->proxy_ipv4_address);
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     memset(&(p->proxy_ipv6_address), 0, sizeof p->proxy_ipv6_address);
 #endif
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     pbpal_multiple_addresses_reset_counters(&p->spare_addresses);
 #endif
 #endif /* defined(PUBNUB_CALLBACK_API) */

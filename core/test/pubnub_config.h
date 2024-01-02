@@ -86,9 +86,9 @@
 #define PUBNUB_USE_MULTIPLE_ADDRESSES 1
 #endif
 
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
 #define PUBNUB_MAX_IPV4_ADDRESSES 2
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 #define PUBNUB_MAX_IPV6_ADDRESSES 2
 #endif
 #endif /* PUBNUB_USE_MULTIPLE_ADDRESSES */
@@ -98,7 +98,7 @@
 #define PUBNUB_SET_DNS_SERVERS 1
 #endif
 
-#if PUBNUB_SET_DNS_SERVERS
+#ifdef PUBNUB_SET_DNS_SERVERS
 /** If true (!=0), enable support for switching between DNS servers */
 #define PUBNUB_CHANGE_DNS_SERVERS 1
 #endif
@@ -107,7 +107,7 @@
 
 /** Maximum number of consecutive retries when sending DNS query in a single transaction */
 #define PUBNUB_MAX_DNS_QUERIES 3
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 /** Maximum number of DNS servers list rotation in a single transaction */
 #define PUBNUB_MAX_DNS_ROTATION 3
 #endif /* PUBNUB_CHANGE_DNS_SERVERS */

@@ -1,4 +1,4 @@
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
 
 #pragma once
 #include "lib/miniz/miniz_common.h"

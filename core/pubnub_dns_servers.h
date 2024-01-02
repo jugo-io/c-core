@@ -11,7 +11,7 @@ struct pubnub_ipv4_address {
     uint8_t ipv4[4];
 };
 
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 /** IPv6 Address, in binary format.
  */
 struct pubnub_ipv6_address {
@@ -26,7 +26,7 @@ struct pubnub_ipv6_address {
 #define PUBNUB_MAX_DNS_SERVERS_MASK 0x04
 #endif /* PUBNUB_USE_IPV6 */
 
-#if PUBNUB_SET_DNS_SERVERS
+#ifdef PUBNUB_SET_DNS_SERVERS
 #include <stdlib.h>
 #include "lib/pb_extern.h"
 
@@ -128,7 +128,7 @@ PUBNUB_EXTERN int pubnub_get_dns_secondary_server_ipv4(struct pubnub_ipv4_addres
   */
 PUBNUB_EXTERN int pubnub_dns_read_system_servers_ipv4(struct pubnub_ipv4_address* o_ipv4,
                                         size_t                      n);
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 /** Sets the primary DNS server IPv6 address to use when
     resolving the Pubnub origin, in binary form(network order).
     Applies to all subsequent DNS queries, if successful.
@@ -217,7 +217,7 @@ PUBNUB_EXTERN int pubnub_get_dns_secondary_server_ipv6(struct pubnub_ipv6_addres
 #define pubnub_get_dns_primary_server_ipv4(o_ipv4) -1
 #define pubnub_get_dns_secondary_server_ipv4(o_ipv4) -1
 #define pubnub_dns_read_system_servers_ipv4(o_ipv4, n) -1
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 #define pubnub_dns_set_primary_server_ipv6(ipv6) -1
 #define pubnub_dns_set_secondary_server_ipv6(ipv6) -1
 #define pubnub_dns_set_primary_server_ipv6_str(ipv6_str) -1

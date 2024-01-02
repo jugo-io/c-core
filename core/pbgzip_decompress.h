@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
 
 #if !defined INC_PUBNUB_DECOMPRESSION
 #define INC_PUBNUB_DECOMPRESSION

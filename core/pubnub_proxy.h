@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
 
 #if !defined INC_PUBNUB_PROXY
 #define INC_PUBNUB_PROXY

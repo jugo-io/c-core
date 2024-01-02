@@ -36,12 +36,12 @@ enum pubnub_res pbcc_revoke_token_prep(struct pbcc_context* pb, char const* toke
     if (uname) { ADD_URL_PARAM(qparam, pnsdk, uname); }
     if (user_id) { ADD_URL_PARAM(qparam, uuid, user_id); }
 
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     ADD_TS_TO_URL_PARAM();
     SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMS_TRANS(pt, pb, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (pb->secret_key != NULL) {
         rslt = pbcc_sign_url(pb, token, pubnubUseDELETE, true);
         if (rslt != PNR_OK) {

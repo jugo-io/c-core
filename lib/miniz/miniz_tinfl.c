@@ -24,7 +24,7 @@
  *
  **************************************************************************/
 
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
 
 #include "lib/miniz/miniz_tinfl.h"
 #include "core/pubnub_log.h"

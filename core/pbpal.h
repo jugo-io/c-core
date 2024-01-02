@@ -76,7 +76,7 @@ enum pbpal_resolv_n_connect_result pbpal_resolv_and_connect(pubnub_t *pb);
 enum pbpal_resolv_n_connect_result pbpal_check_resolv_and_connect(pubnub_t *pb);
 
 #if defined(PUBNUB_CALLBACK_API)
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 /** Rotate DNS servers in following order: 
          primary->secondary->default->primary->...
     
@@ -255,7 +255,7 @@ int pbpal_set_blocking_io(pubnub_t *pb);
 */
 void pbpal_free(pubnub_t *pb);
 
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
 struct pubnub_multi_addresses;
 void pbpal_multiple_addresses_reset_counters(struct pubnub_multi_addresses* spare_addresses);
 #endif /* PUBNUB_USE_MULTIPLE_ADDRESSES */

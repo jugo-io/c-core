@@ -47,7 +47,7 @@ enum pbpal_resolv_n_connect_result pbpal_check_resolv_and_connect(pubnub_t *pb)
     switch (dns_result) {
         case TCPIP_DNS_RES_OK:
             if (SOCKET_INVALID == pb->pal.socket) {
-#if PUBNUB_USE_SSL            
+#ifdef PUBNUB_USE_SSL            
                 pb->pal.socket = NET_PRES_SocketOpen(
                         0, 
                         pb->options.useSSL ? NET_PRES_SKT_ENCRYPTED_STREAM_CLIENT : NET_PRES_SKT_UNENCRYPTED_STREAM_CLIENT,
@@ -79,7 +79,7 @@ enum pbpal_resolv_n_connect_result pbpal_check_resolv_and_connect(pubnub_t *pb)
 
 enum pbpal_resolv_n_connect_result pbpal_check_connect(pubnub_t *pb)
 {
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     bool connected = !NET_PRES_SocketIsNegotiatingEncryption(pb->pal.socket) &&
             NET_PRES_SocketIsSecure(pb->pal.socket);
     return bool ? pbpal_connect_success : pbpal_connect_wouldblock;
@@ -89,7 +89,7 @@ enum pbpal_resolv_n_connect_result pbpal_check_connect(pubnub_t *pb)
 }
 
 #if defined(PUBNUB_CALLBACK_API)
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 int pbpal_dns_rotate_server(pubnub_t *pb)
 {
     return (pbp->flags.sent_queries < PUBNUB_MAX_DNS_QUERIES ? 0 : 1)

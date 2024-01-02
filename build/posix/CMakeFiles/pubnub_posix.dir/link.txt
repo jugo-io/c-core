@@ -1,0 +1,2 @@
+/usr/bin/ar qc libpubnub_posix.a CMakeFiles/pubnub_posix.dir/pubnub_version_posix.c.o CMakeFiles/pubnub_posix.dir/pubnub_generate_uuid_posix.c.o CMakeFiles/pubnub_posix.dir/pbpal_posix_blocking_io.c.o CMakeFiles/pubnub_posix.dir/msstopwatch_monotonic_clock.c.o CMakeFiles/pubnub_posix.dir/pbtimespec_elapsed_ms.c.o CMakeFiles/pubnub_posix.dir/posix_socket_blocking_io.c.o CMakeFiles/pubnub_posix.dir/pb_sleep_ms.c.o
+/usr/bin/ranlib libpubnub_posix.a

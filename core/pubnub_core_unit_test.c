@@ -10,7 +10,7 @@
 #include "pubnub_coreapi.h"
 // TODO: move coreapi_ex to new module
 #include "pubnub_coreapi_ex.h"
-#if PUBNUB_USE_ADVANCED_HISTORY
+#ifdef PUBNUB_USE_ADVANCED_HISTORY
 #include "pubnub_memory_block.h"
 #include "pubnub_advanced_history.h"
 #endif
@@ -1029,7 +1029,7 @@ Ensure(single_context_pubnub, history_bad_response)
 
 /* -- ADVANCED HISTORY message_counts -- */
 
-#if PUBNUB_USE_ADVANCED_HISTORY
+#ifdef PUBNUB_USE_ADVANCED_HISTORY
 Ensure(single_context_pubnub, gets_advanced_history_message_counts_for_two_channels_since_timetoken)
 {
     size_t io_count = 2;
@@ -4554,7 +4554,7 @@ Ensure(single_context_pubnub, wont_fail_on_freed) {
 /* Verify ASSERT gets fired */
 Ensure(single_context_pubnub, illegal_context_fires_assert)
 {
-#if PUBNUB_USE_ADVANCED_HISTORY
+#ifdef PUBNUB_USE_ADVANCED_HISTORY
     pubnub_chamebl_t o_msg[1];
     size_t io_count;
     struct pubnub_chan_msg_count chan_msg_counters[1];
@@ -4612,10 +4612,10 @@ Ensure(single_context_pubnub, illegal_context_fires_assert)
     expect_assert_in(pubnub_get_origin(NULL), "pubnub_pubsubapi.c");
     expect_assert_in(pubnub_free((pubnub_t*)((char*)pbp + 10000)),
                      "pubnub_alloc_static.c");
-#if PUBNUB_USE_ACTIONS_API
+#ifdef PUBNUB_USE_ACTIONS_API
     expect_assert_in(pubnub_parse_token(pbp, NULL), "pubnub_grant_token_api.c");
 #endif
-#if PUBNUB_USE_ADVANCED_HISTORY
+#ifdef PUBNUB_USE_ADVANCED_HISTORY
     expect_assert_in(pubnub_get_error_message(NULL, o_msg), "pubnub_advanced_history.c");
     expect_assert_in(pubnub_get_chan_msg_counts_size(NULL), "pubnub_advanced_history.c");
     expect_assert_in(pubnub_message_counts(NULL, "ch", "12345"), "pubnub_advanced_history.c");

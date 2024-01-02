@@ -15,12 +15,12 @@
 #include <ctype.h>
 #include <string.h>
 
-#if PUBNUB_ONLY_PUBSUB_API
+#ifdef PUBNUB_ONLY_PUBSUB_API
 #warning This module is not useful if configured to use only the publish and subscribe API
 #endif
 
 
-#if PUBNUB_USE_AUTO_HEARTBEAT
+#ifdef PUBNUB_USE_AUTO_HEARTBEAT
 #include "lib/pbstr_remove_from_list.h"
 static void update_channels_and_ch_groups(pubnub_t* pb,
                                           const char* channel,

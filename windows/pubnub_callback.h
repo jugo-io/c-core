@@ -39,7 +39,7 @@
 #include "core/pubnub_pubsubapi.h"
 #include "core/pubnub_ntf_callback.h"
 #include "core/pubnub_generate_uuid.h"
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 #include "core/pubnub_subscribe_v2.h"
 #endif
 

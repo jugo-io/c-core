@@ -1,14 +1,14 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 #include "pubnub_internal.h"
 
-#if PUBNUB_SET_DNS_SERVERS
+#ifdef PUBNUB_SET_DNS_SERVERS
 #include "core/pubnub_dns_servers.h"
 #include "lib/pubnub_parse_ipv4_addr.h"
 #else
 #error PUBNUB_SET_DNS_SERVERS must be defined and set to 1 before compiling this file
 #endif
 
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 #include "lib/pubnub_parse_ipv6_addr.h"
 #endif
 
@@ -22,7 +22,7 @@
 pubnub_mutex_static_decl_and_init(m_lock);
 static struct pubnub_ipv4_address m_primary_dns_server_ipv4 pubnub_guarded_by(m_lock);
 static struct pubnub_ipv4_address m_secondary_dns_server_ipv4 pubnub_guarded_by(m_lock);
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 static struct pubnub_ipv6_address m_primary_dns_server_ipv6 pubnub_guarded_by(m_lock);
 static struct pubnub_ipv6_address m_secondary_dns_server_ipv6 pubnub_guarded_by(m_lock);
 #endif /* PUBNUB_USE_IPV6 */
@@ -165,7 +165,7 @@ int pubnub_get_dns_secondary_server_ipv4(struct pubnub_ipv4_address* o_ipv4)
     return ret;
 }
 
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 int pubnub_dns_set_primary_server_ipv6(struct pubnub_ipv6_address ipv6_address)
 {
     uint8_t* ipv6 = ipv6_address.ipv6;

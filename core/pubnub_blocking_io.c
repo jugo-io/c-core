@@ -7,7 +7,7 @@
 
 int pubnub_set_non_blocking_io(pubnub_t *p)
 {
-#if PUBNUB_BLOCKING_IO_SETTABLE
+#ifdef PUBNUB_BLOCKING_IO_SETTABLE
     pubnub_mutex_lock(p->monitor);
     p->options.use_blocking_io = false;
     pubnub_mutex_unlock(p->monitor);
@@ -19,7 +19,7 @@ int pubnub_set_non_blocking_io(pubnub_t *p)
 
 int  pubnub_set_blocking_io(pubnub_t *p)
 {
-#if PUBNUB_BLOCKING_IO_SETTABLE
+#ifdef PUBNUB_BLOCKING_IO_SETTABLE
     pubnub_mutex_lock(p->monitor);
     p->options.use_blocking_io = true;
     pubnub_mutex_unlock(p->monitor);

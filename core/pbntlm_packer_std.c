@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
 
 #include "pbntlm_packer.h"
 

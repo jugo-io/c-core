@@ -1,5 +1,5 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
-#if PUBNUB_USE_FETCH_HISTORY
+#ifdef PUBNUB_USE_FETCH_HISTORY
 
 #if !defined INC_PUBNUB_FETCH_HISTORY
 #define INC_PUBNUB_FETCH_HISTORY

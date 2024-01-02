@@ -200,7 +200,7 @@ enum pbpal_resolv_n_connect_result pbpal_check_resolv_and_connect(pubnub_t* pb)
 }
 
 #if defined(PUBNUB_CALLBACK_API)
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 int pbpal_dns_rotate_server(pubnub_t *pb)
 {
     return mock("pbpal_dns_rotate_server", pb, "");

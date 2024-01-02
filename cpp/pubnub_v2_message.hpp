@@ -2,7 +2,7 @@
 #if !defined INC_PUBNUB_V2_MESSAGE_HPP
 #define INC_PUBNUB_V2_MESSAGE_HPP
 
-#if !PUBNUB_USE_SUBSCRIBE_V2
+#ifndef PUBNUB_USE_SUBSCRIBE_V2
 #error To use the subscribe V2 API you must define PUBNUB_USE_SUBSCRIBE_V2=1
 #endif
 

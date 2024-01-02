@@ -1,0 +1,2 @@
+/usr/bin/ar qc libpubnub-openssl.a CMakeFiles/pubnub-openssl.dir/pubnub_ntf_callback_posix.c.o CMakeFiles/pubnub-openssl.dir/pubnub_get_native_socket.c.o CMakeFiles/pubnub-openssl.dir/pbpal_openssl.c.o CMakeFiles/pubnub-openssl.dir/pbpal_connect_openssl.c.o CMakeFiles/pubnub-openssl.dir/pbpal_add_system_certs_posix.c.o CMakeFiles/pubnub-openssl.dir/pbpal_openssl_blocking_io.c.o CMakeFiles/pubnub-openssl.dir/pbaes256.c.o
+/usr/bin/ranlib libpubnub-openssl.a

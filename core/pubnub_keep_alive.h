@@ -12,7 +12,7 @@
     API for setting the Keep-Alive options.
 */
 
-#if !PUBNUB_ADVANCED_KEEP_ALIVE
+#ifndef PUBNUB_ADVANCED_KEEP_ALIVE
 #error This API is only supported if PUBNUB_ADVANCED_KEEP_ALIVE macro constant is 'true'
 #endif
 

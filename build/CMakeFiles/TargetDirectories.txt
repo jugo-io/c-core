@@ -1,0 +1,11 @@
+/home/tom/dev/c-core/build/CMakeFiles/edit_cache.dir
+/home/tom/dev/c-core/build/CMakeFiles/rebuild_cache.dir
+/home/tom/dev/c-core/build/posix/CMakeFiles/pubnub_posix.dir
+/home/tom/dev/c-core/build/posix/CMakeFiles/edit_cache.dir
+/home/tom/dev/c-core/build/posix/CMakeFiles/rebuild_cache.dir
+/home/tom/dev/c-core/build/core/CMakeFiles/pubnub_core.dir
+/home/tom/dev/c-core/build/core/CMakeFiles/edit_cache.dir
+/home/tom/dev/c-core/build/core/CMakeFiles/rebuild_cache.dir
+/home/tom/dev/c-core/build/openssl/CMakeFiles/pubnub-openssl.dir
+/home/tom/dev/c-core/build/openssl/CMakeFiles/edit_cache.dir
+/home/tom/dev/c-core/build/openssl/CMakeFiles/rebuild_cache.dir

@@ -57,7 +57,7 @@ PUBNUB_EXTERN char const* pubnub_res_2_string(enum pubnub_res e);
  */
 PUBNUB_EXTERN char const* pbpal_resolv_n_connect_res_2_string(enum pbpal_resolv_n_connect_result e);
 
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 #include "pubnub_subscribe_v2_message.h"
 /** Returns a string literal describing enum value @p type
     Used when looking at pubnub V2 message received by pubnub_subscribe_v2().

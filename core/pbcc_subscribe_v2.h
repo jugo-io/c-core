@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 
 #if !defined INC_PBCC_SUBSCRIBE_V2
 #define INC_PBCC_SUBSCRIBE_V2

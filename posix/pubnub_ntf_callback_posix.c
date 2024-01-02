@@ -27,7 +27,7 @@ struct SocketWatcherData {
     pthread_mutex_t timerlock;
     pthread_mutex_t stoplock;
     pthread_t       thread_id;
-#if PUBNUB_TIMERS_API
+#ifdef PUBNUB_TIMERS_API
     pubnub_t* timer_head pubnub_guarded_by(timerlock);
 #endif
     struct pbpal_ntf_callback_queue queue;

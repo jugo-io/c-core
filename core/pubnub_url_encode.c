@@ -17,8 +17,8 @@ int pubnub_url_encode(char* buffer, char const* what, size_t buffer_size, enum p
     PUBNUB_ASSERT_OPT(what != NULL);
 
     switch(pt){
-#if PUBNUB_USE_OBJECTS_API || PUBNUB_USE_REVOKE_TOKEN_API
-#if PUBNUB_USE_OBJECTS_API
+#ifdef PUBNUB_USE_OBJECTS_API || PUBNUB_USE_REVOKE_TOKEN_API
+#ifdef PUBNUB_USE_OBJECTS_API
     case PBTT_GETALL_UUIDMETADATA :
     case PBTT_SET_UUIDMETADATA:
     case PBTT_GET_UUIDMETADATA:
@@ -34,7 +34,7 @@ int pubnub_url_encode(char* buffer, char const* what, size_t buffer_size, enum p
     case PBTT_REMOVE_MEMBERS:
     case PBTT_MESSAGE_COUNTS:
 #endif // PUBNUB_USE_OBJECTS_API
-#if PUBNUB_USE_REVOKE_TOKEN_API
+#ifdef PUBNUB_USE_REVOKE_TOKEN_API
     case PBTT_REVOKE_TOKEN:
 #endif // PUBNUB_USE_REVOKE_TOKEN_API
         okSpanChars = OK_SPAN_CHARS_MINUS_COMMA;

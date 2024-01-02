@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_USE_ACTIONS_API
+#ifdef PUBNUB_USE_ACTIONS_API
 
 #if !defined INC_PUBNUB_ACTIONS_API
 #define INC_PUBNUB_ACTIONS_API

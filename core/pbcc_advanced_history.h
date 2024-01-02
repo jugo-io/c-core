@@ -1,5 +1,5 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
-#if PUBNUB_USE_ADVANCED_HISTORY
+#ifdef PUBNUB_USE_ADVANCED_HISTORY
 #if !defined INC_PBCC_ADVANCED_HISTORY
 #define INC_PBCC_ADVANCED_HISTORY
 

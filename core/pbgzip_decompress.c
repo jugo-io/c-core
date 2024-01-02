@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
 
 #include "pubnub_internal.h"
 
@@ -69,14 +69,14 @@ static enum pubnub_res inflate_total_to_context_buffer(pubnub_t*      pb,
     return PNR_BAD_COMPRESSION_FORMAT;
 }
 
-#if !PUBNUB_DYNAMIC_REPLY_BUFFER
+#ifndef PUBNUB_DYNAMIC_REPLY_BUFFER
 PUBNUB_STATIC_ASSERT(sizeof((pubnub_t*)0)->core.http_reply == sizeof((pubnub_t*)0)->core.decomp_http_reply,
                      http_reply_and_gzip_decompression_buffer_dont_match);
 #endif
 
 static void swap_reply_buffer(pubnub_t* pb)
 {
-#if PUBNUB_DYNAMIC_REPLY_BUFFER
+#ifdef PUBNUB_DYNAMIC_REPLY_BUFFER
     char*  aux_buf             = pb->core.http_reply;
     size_t aux_buf_len         = pb->core.http_buf_len;
     pb->core.http_reply        = pb->core.decomp_http_reply;
@@ -98,7 +98,7 @@ static enum pubnub_res inflate_total(pubnub_t*      pb,
                                      size_t         out_len)
 {
     enum pubnub_res result;
-#if PUBNUB_DYNAMIC_REPLY_BUFFER
+#ifdef PUBNUB_DYNAMIC_REPLY_BUFFER
     if (pb->core.decomp_buf_size < out_len) {
         char* newbuf = (char*)realloc(pb->core.decomp_http_reply, out_len + 1);
         if (NULL == newbuf) {

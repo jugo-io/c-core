@@ -31,7 +31,7 @@ enum DNSqueryType {
     dnsANY = 255
 };
 
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 #define IPV6_ADDR_ARGUMENT_DECLARATION , struct pubnub_ipv6_address* resolved_addr_ipv6
 #define IPV6_ADDR_ARGUMENT , resolved_addr_ipv6
 #else
@@ -39,7 +39,7 @@ enum DNSqueryType {
 #define IPV6_ADDR_ARGUMENT
 #endif /* PUBNUB_USE_IPV6 */
 
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
 #define PBDNS_OPTIONAL_PARAMS_DECLARATIONS , struct pubnub_multi_addresses* spare_addresses \
                                            , struct pubnub_options const* options
 #define PBDNS_OPTIONAL_PARAMS , spare_addresses, options

@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_USE_OBJECTS_API
+#ifdef PUBNUB_USE_OBJECTS_API
 
 #if !defined INC_PBCC_OBJECTS_API
 #define INC_PBCC_OBJECTS_API

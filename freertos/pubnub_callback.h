@@ -46,7 +46,7 @@
 #include "pubnub_coreapi.h"
 #include "pubnub_ntf_callback.h"
 #include "pubnub_generate_uuid.h"
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 #include "core/pubnub_subscribe_v2.h"
 #endif
 

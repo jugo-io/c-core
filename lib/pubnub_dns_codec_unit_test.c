@@ -26,7 +26,7 @@
 #define sets_ex will_set_contents_of_parameter
 #define returns will_return
 
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 #define IPV6_NULL_ARGUMENT , NULL
 #else
 #define IPV6_NULL_ARGUMENT
@@ -258,7 +258,7 @@ Describe(pubnub_dns_codec);
 
 static pubnub_t bp;
 
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
 
 #define PBDNS_OPTIONAL_PARAMS_BP , &bp.spare_addresses, &bp.options
 
@@ -266,7 +266,7 @@ static void multiple_addresses_reset_counters(struct pubnub_multi_addresses* spa
 {
     spare_addresses->n_ipv4 = 0;
     spare_addresses->ipv4_index = 0;
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     spare_addresses->n_ipv6 = 0;
     spare_addresses->ipv6_index = 0;
 #endif
@@ -281,8 +281,8 @@ BeforeEach(pubnub_dns_codec)
     pubnub_assert_set_handler((pubnub_assert_handler_t)assert_handler);
     m_msg_size = m_msg_label_pieces_length = m_offset = 0;
     m_buf[OFFSET_FLAGS + 1] = m_buf[OFFSET_FLAGS] = 0;
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_SSL
     bp.options.fallbackSSL = true;
 #endif
     bp.dns_check.dns_server_check = 0;
@@ -322,7 +322,7 @@ Ensure(pubnub_dns_codec, decodes_strange_response_2_questions_3_answers)
                                          PBDNS_OPTIONAL_PARAMS_BP),
            equals(0));
     attest(memcmp(&resolved_addr_ipv4, &key_addr, sizeof resolved_addr_ipv4), equals(0));
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     attest(memcmp(bp.spare_addresses.ipv4_addresses[0].ipv4,
                   data,
                   sizeof resolved_addr_ipv4.ipv4),
@@ -335,7 +335,7 @@ Ensure(pubnub_dns_codec, decodes_strange_response_2_questions_3_answers)
     attest(bp.spare_addresses.ttl_ipv4[1], equals(100));
     attest(bp.spare_addresses.n_ipv4, equals(2));
     attest(bp.spare_addresses.ipv4_index, equals(0));
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     attest(bp.spare_addresses.n_ipv6, equals(0));
     attest(bp.spare_addresses.ipv6_index, equals(0));
 #endif
@@ -354,7 +354,7 @@ Ensure(pubnub_dns_codec, decodes_response_1_question_3_answers_no_ssl_fallback)
 
     memcpy(key_addr.ipv4, data, sizeof key_addr.ipv4);
 
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     bp.options.fallbackSSL = false;
 #endif
     /* Assembling test message(response from DNS server) with 2 questions and 2 answers.
@@ -374,7 +374,7 @@ Ensure(pubnub_dns_codec, decodes_response_1_question_3_answers_no_ssl_fallback)
                                          PBDNS_OPTIONAL_PARAMS_BP),
            equals(0));
     attest(memcmp(&resolved_addr_ipv4, &key_addr, sizeof resolved_addr_ipv4), equals(0));
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     attest(memcmp(bp.spare_addresses.ipv4_addresses[0].ipv4,
                   data,
                   sizeof bp.spare_addresses.ipv4_addresses[0].ipv4),
@@ -387,7 +387,7 @@ Ensure(pubnub_dns_codec, decodes_response_1_question_3_answers_no_ssl_fallback)
     attest(bp.spare_addresses.ttl_ipv4[1], equals(0xFFFF));
     attest(bp.spare_addresses.n_ipv4, equals(2));
     attest(bp.spare_addresses.ipv4_index, equals(0));
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     attest(bp.spare_addresses.n_ipv6, equals(0));
     attest(bp.spare_addresses.ipv6_index, equals(0));
 #endif
@@ -453,7 +453,7 @@ Ensure(pubnub_dns_codec, decodes_label_too_long_to_fit_in_modules_buffer)
                                          IPV6_NULL_ARGUMENT
                                          PBDNS_OPTIONAL_PARAMS_BP),
            equals(-1));
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     attest(memcmp(bp.spare_addresses.ipv4_addresses[0].ipv4,
                   data,
                   sizeof resolved_addr_ipv4.ipv4),
@@ -461,7 +461,7 @@ Ensure(pubnub_dns_codec, decodes_label_too_long_to_fit_in_modules_buffer)
     attest(bp.spare_addresses.ttl_ipv4[0], equals(5));
     attest(bp.spare_addresses.n_ipv4, equals(1));
     attest(bp.spare_addresses.ipv4_index, equals(0));
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     attest(bp.spare_addresses.n_ipv6, equals(0));
     attest(bp.spare_addresses.ipv6_index, equals(0));
 #endif
@@ -569,7 +569,7 @@ Ensure(pubnub_dns_codec, decodes_response_encoded_label_splitted)
                                          PBDNS_OPTIONAL_PARAMS_BP),
            equals(0));
     attest(memcmp(&resolved_addr_ipv4, &key_addr, sizeof resolved_addr_ipv4), equals(0));
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     attest(memcmp(bp.spare_addresses.ipv4_addresses[0].ipv4,
                   data,
                   sizeof resolved_addr_ipv4.ipv4),
@@ -577,7 +577,7 @@ Ensure(pubnub_dns_codec, decodes_response_encoded_label_splitted)
     attest(bp.spare_addresses.ttl_ipv4[0], equals(4));
     attest(bp.spare_addresses.n_ipv4, equals(1));
     attest(bp.spare_addresses.ipv4_index, equals(0));
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     attest(bp.spare_addresses.n_ipv6, equals(0));
     attest(bp.spare_addresses.ipv6_index, equals(0));
 #endif
@@ -809,7 +809,7 @@ Ensure(pubnub_dns_codec, handles_splitted_label_too_long_for_modules_buffer)
                                          PBDNS_OPTIONAL_PARAMS_BP),
            equals(0));
     attest(memcmp(&resolved_addr_ipv4, &key_addr, sizeof resolved_addr_ipv4), equals(0));
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     attest(bp.spare_addresses.n_ipv4, equals(0));
     attest(bp.spare_addresses.ipv4_index, equals(0));
     attest(bp.spare_addresses.n_ipv6, equals(0));
@@ -853,7 +853,7 @@ Ensure(pubnub_dns_codec, handles_response_RecordType_and_DataLength_mismatch)
                                          IPV6_NULL_ARGUMENT
                                          PBDNS_OPTIONAL_PARAMS_BP),
            equals(0));
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     attest(memcmp(bp.spare_addresses.ipv4_addresses[0].ipv4,
                   data_2,
                   sizeof resolved_addr_ipv4.ipv4),
@@ -861,7 +861,7 @@ Ensure(pubnub_dns_codec, handles_response_RecordType_and_DataLength_mismatch)
     attest(bp.spare_addresses.ttl_ipv4[0], equals(123));
     attest(bp.spare_addresses.n_ipv4, equals(1));
     attest(bp.spare_addresses.ipv4_index, equals(0));
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     attest(bp.spare_addresses.n_ipv6, equals(0));
     attest(bp.spare_addresses.ipv6_index, equals(0));
 #endif
@@ -938,7 +938,7 @@ Ensure(pubnub_dns_codec, handles_name_label_stretch_with_no_length)
     attest(pbdns_prepare_dns_request(buf, sizeof buf, name, &to_send, dnsA), equals(-1));
 }
 
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
 Ensure(pubnub_dns_codec, handles_response_RecordType_and_DataLength_mismatch_on_Ipv6_answer)
 {
     /* Resolved IpvX address */
@@ -955,7 +955,7 @@ Ensure(pubnub_dns_codec, handles_response_RecordType_and_DataLength_mismatch_on_
                                          &resolved_addr_ipv6
                                          PBDNS_OPTIONAL_PARAMS_BP),
            equals(-1));
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     attest(bp.spare_addresses.n_ipv4, equals(0));
     attest(bp.spare_addresses.ipv4_index, equals(0));
     attest(bp.spare_addresses.n_ipv6, equals(0));
@@ -989,7 +989,7 @@ Ensure(pubnub_dns_codec, handles_response_RecordTypeAAAA_and_RecordTypeA)
            equals(0));
     attest(memcmp(&resolved_addr_ipv6, &key_addr, sizeof resolved_addr_ipv6), equals(0));
     attest(memcmp(&resolved_addr_ipv4.ipv4, data_zeros, sizeof resolved_addr_ipv4.ipv4), equals(0));
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     attest(memcmp(bp.spare_addresses.ipv6_addresses[0].ipv6,
                   data_2,
                   sizeof resolved_addr_ipv6.ipv6),
@@ -1026,7 +1026,7 @@ Ensure(pubnub_dns_codec, handles_response_with_RecordTypeAAAA_no_ssl_fallback)
 
     memcpy(key_addr.ipv6, data_1, sizeof key_addr.ipv6);
 
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     bp.options.fallbackSSL = false;
 #endif
     
@@ -1047,7 +1047,7 @@ Ensure(pubnub_dns_codec, handles_response_with_RecordTypeAAAA_no_ssl_fallback)
            equals(0));
     attest(memcmp(&resolved_addr_ipv4.ipv4, data_zeros, sizeof resolved_addr_ipv4), equals(0));
     attest(memcmp(&resolved_addr_ipv6, &key_addr, sizeof resolved_addr_ipv6), equals(0));
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     attest(memcmp(bp.spare_addresses.ipv6_addresses[0].ipv6,
                   data_1,
                   sizeof bp.spare_addresses.ipv6_addresses[0].ipv6),

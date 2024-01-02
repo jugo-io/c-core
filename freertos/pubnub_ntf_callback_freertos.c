@@ -21,7 +21,7 @@ struct SocketWatcherData {
     xSocketSet_t xFD_set;
     SemaphoreHandle_t  mutw;
     TaskHandle_t task;
-#if PUBNUB_TIMERS_API
+#ifdef PUBNUB_TIMERS_API
     pubnub_t *timer_head;
 #endif
     SemaphoreHandle_t queue_lock;

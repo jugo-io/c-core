@@ -2,7 +2,7 @@
 #include "pubnub_helper.h"
 
 #include "pubnub_assert.h"
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 #include "pubnub_subscribe_v2_message.h"
 #endif
 
@@ -106,7 +106,7 @@ char const* pbpal_resolv_n_connect_res_2_string(enum pbpal_resolv_n_connect_resu
 }
 
 
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 char const* pubnub_msg_type_to_str(enum pubnub_message_type type)
 {
     switch (type) {

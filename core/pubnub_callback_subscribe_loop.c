@@ -24,7 +24,7 @@ struct pubnub_subloop_descriptor {
     /** Saved user data for callback from the #pbp context */
     pubnub_guarded_by(monitor) void* saved_context_user_data;
 
-#if PUBNUB_THREADSAFE
+#ifdef PUBNUB_THREADSAFE
     pubnub_mutex_t monitor;
 #endif
 };

@@ -52,7 +52,7 @@ enum pubnub_res pubnub_publish_ex(pubnub_t*                     pb,
         pubnub_mutex_unlock(pb->monitor);
         return PNR_IN_PROGRESS;
     }
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (NULL != pb->core.crypto_module && NULL != opts.cipher_key) {
         PUBNUB_LOG_WARNING("pubnub_publish_ex(pb=%p).cipher_key called while client crypto module is set! Using crypto module instead!\n", pb);
     } else if (NULL != opts.cipher_key) {
@@ -71,7 +71,7 @@ enum pubnub_res pubnub_publish_ex(pubnub_t*                     pb,
         message            = encrypted_msg;
     }
 #endif
-#if PUBNUB_USE_GZIP_COMPRESSION
+#ifdef PUBNUB_USE_GZIP_COMPRESSION
     if (pubnubSendViaPOSTwithGZIP == opts.method) {
         message = (pbgzip_compress(pb, message) == PNR_OK) ? pb->core.gzip_msg_buf : message;
     }

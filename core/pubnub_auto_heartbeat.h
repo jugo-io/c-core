@@ -3,7 +3,7 @@
 #if !defined INC_PUBNUB_AUTO_HEARTBEAT
 #define INC_PUBNUB_AUTO_HEARTBEAT
 
-#if PUBNUB_USE_AUTO_HEARTBEAT
+#ifdef PUBNUB_USE_AUTO_HEARTBEAT
 
 #include "lib/pb_extern.h"
 

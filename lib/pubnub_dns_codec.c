@@ -514,7 +514,7 @@ static int check_answer(const uint8_t** o_reader,
             memcpy(resolved_addr_ipv4->ipv4, reader, 4);
             *p_address_found = true;
         }
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
         if (spare_addresses->n_ipv4 < PUBNUB_MAX_IPV4_ADDRESSES) {
             /* Time to live. Network byte order - big endian */
             uint32_t ttl_ipv4 = ((uint32_t)reader[RESOURCE_DATA_TTL_OFFSET] << 24) |
@@ -543,7 +543,7 @@ static int check_answer(const uint8_t** o_reader,
 #endif
         return 0;
     }
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     else if ((dnsAAAA == r_data_type) && (resolved_addr_ipv6 != NULL)) {
         const uint8_t* reader = *o_reader;
         *o_reader += r_data_len;
@@ -567,7 +567,7 @@ static int check_answer(const uint8_t** o_reader,
             memcpy(resolved_addr_ipv6->ipv6, reader, 16);
             *p_address_found = true;
         }
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
         if (spare_addresses->n_ipv6 < PUBNUB_MAX_IPV6_ADDRESSES) {
             /* Time to live. Network byte order - big endian */
             uint32_t ttl_ipv6 = ((uint32_t)reader[RESOURCE_DATA_TTL_OFFSET] << 24) |
@@ -666,7 +666,7 @@ static int find_the_answer(uint8_t const* reader,
                         resolved_addr_ipv4
                         IPV6_ADDR_ARGUMENT
                         PBDNS_OPTIONAL_PARAMS) == 0) {
-#if !PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifndef PUBNUB_USE_MULTIPLE_ADDRESSES
             return 0;
 #endif
         }
@@ -687,7 +687,7 @@ int pbdns_pick_resolved_addresses(uint8_t const* buf,
     uint8_t const* end;
 
     PUBNUB_ASSERT_OPT(buf != NULL);
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     PUBNUB_ASSERT_OPT((resolved_addr_ipv4 != NULL) || (resolved_addr_ipv6 != NULL));
 #else
     PUBNUB_ASSERT_OPT(resolved_addr_ipv4 != NULL);

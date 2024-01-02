@@ -76,7 +76,7 @@
 
 #if !defined(PUBNUB_PROXY_API)
 #define PUBNUB_PROXY_API 0
-#elif PUBNUB_PROXY_API
+#elif defined PUBNUB_PROXY_API
 #include "core/pubnub_proxy.h"
 #include "core/pubnub_proxy_core.h"
 #include "core/pbhttp_digest.h"
@@ -90,18 +90,18 @@
 
 #if !defined PUBNUB_USE_GZIP_COMPRESSION
 #define PUBNUB_USE_GZIP_COMPRESSION 0
-#elif PUBNUB_USE_GZIP_COMPRESSION
+#elif defined PUBNUB_USE_GZIP_COMPRESSION
 #include "core/pbgzip_compress.h"
 #endif
 
 #if !defined PUBNUB_RECEIVE_GZIP_RESPONSE
 #define PUBNUB_RECEIVE_GZIP_RESPONSE 0
-#elif PUBNUB_RECEIVE_GZIP_RESPONSE
+#elif defined PUBNUB_RECEIVE_GZIP_RESPONSE
 #include "core/pbgzip_decompress.h"
 #endif
 
 #include <stdint.h>
-#if PUBNUB_ADVANCED_KEEP_ALIVE
+#ifdef PUBNUB_ADVANCED_KEEP_ALIVE
 #include <time.h>
 #endif
 
@@ -158,7 +158,7 @@ enum NPBNTLM_State {
 /** Maximum supported length of the NTLM token (message) */
 #define PUBNUB_NTLM_MAX_TOKEN 1024
 
-#if PUBNUB_USE_WIN_SSPI
+#ifdef PUBNUB_USE_WIN_SSPI
 #define SECURITY_WIN32
 #include <sspi.h>
 #endif
@@ -176,7 +176,7 @@ struct pbntlm_context {
      * message */
     unsigned in_token_size;
 
-#if PUBNUB_USE_WIN_SSPI
+#ifdef PUBNUB_USE_WIN_SSPI
     /** The SSPI context handle */
     CtxtHandle hcontext;
     /** The SSPI credentials handle */
@@ -190,7 +190,7 @@ struct pbntlm_context {
 typedef struct pbntlm_context pbntlm_ctx_t;
 
 struct pubnub_options {
-#if PUBNUB_BLOCKING_IO_SETTABLE
+#ifdef PUBNUB_BLOCKING_IO_SETTABLE
     /** Indicates whether to use blocking I/O. Not implemented if
         choosing between blocking and non-blocking is not supported
         on a platform.
@@ -206,11 +206,11 @@ struct pubnub_options {
      */
     bool use_http_keep_alive : 1;
 
-#if PUBNUB_USE_IPV6 && defined(PUBNUB_CALLBACK_API)
+#if defined(PUBNUB_USE_IPV6) && defined(PUBNUB_CALLBACK_API)
     /* Connectivity type(true-Ipv6/false-Ipv4) chosen on a given context */
     bool ipv6_connectivity : 1;
 #endif
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     /** Should the PubNub client establish the connection to
       * PubNub using SSL? */
     bool useSSL : 1;
@@ -227,13 +227,13 @@ struct pubnub_options {
 };
 
 struct pubnub_flags {
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     /** Try to establish TLS/SSL over existing TCP/IP connection: yes/no */
     bool trySSL : 1;
 #endif
     /** Should close connection */
     bool should_close : 1;
-#if PUBNUB_NEED_RETRY_AFTER_CLOSE
+#ifdef PUBNUB_NEED_RETRY_AFTER_CLOSE
     /** Retry the same Pubnub request after closing current TCP
         connection.
       */
@@ -255,7 +255,7 @@ struct pubnub_flags {
         Macro constant limiting number of retries is defined in 'pubnub_config.h'
       */
     int sent_queries : SENT_QUERIES_SIZE_IN_BITS;
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 #define ROTATIONS_COUNT_SIZE_IN_BITS 3
     /** Number of full DNS servers list rotations in single transaction to a single DNS
         server.
@@ -268,7 +268,7 @@ struct pubnub_flags {
 #endif
 };
 
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
 struct pbdns_servers_check {
     /* One-bit mask that shifts */
     uint8_t dns_mask;
@@ -281,7 +281,7 @@ struct pbdns_servers_check {
 };
 #endif
 
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
 struct pubnub_multi_addresses {
     time_t time_of_the_last_dns_query; 
     /* Number of spare ipv4 addresses */
@@ -292,7 +292,7 @@ struct pubnub_multi_addresses {
     struct pubnub_ipv4_address ipv4_addresses[PUBNUB_MAX_IPV4_ADDRESSES];
     /* Time to live for each saved ipv4 address */
     uint16_t ttl_ipv4[PUBNUB_MAX_IPV4_ADDRESSES];
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     /* Number of spare ipv6 addresses */
     int n_ipv6;
     /* ipv6 address index(from the array) currently used */
@@ -377,7 +377,7 @@ struct pubnub_ {
       */
     uint8_t method;
     
-#if PUBNUB_ADVANCED_KEEP_ALIVE
+#ifdef PUBNUB_ADVANCED_KEEP_ALIVE
     struct pubnub_keep_alive_data {
         time_t   timeout;
         time_t   t_connect;
@@ -386,11 +386,11 @@ struct pubnub_ {
     } keep_alive;
 #endif
 
-#if PUBNUB_RECEIVE_GZIP_RESPONSE
+#ifdef PUBNUB_RECEIVE_GZIP_RESPONSE
     enum pubnub_data_compressionType data_compressed;
 #endif
 
-#if PUBNUB_USE_SSL
+#ifdef PUBNUB_USE_SSL
     /** Certificate store file */
     char const* ssl_CAfile;
     /** Certificate store directory */
@@ -399,11 +399,11 @@ struct pubnub_ {
     char const* ssl_userPEMcert;
 #endif /* PUBNUB_USE_SSL */
 
-#if PUBNUB_THREADSAFE
+#ifdef PUBNUB_THREADSAFE
     pubnub_mutex_t monitor;
 #endif
 
-#if PUBNUB_TIMERS_API
+#ifdef PUBNUB_TIMERS_API
     /** Duration of the transaction timeout, in milliseconds */
     int transaction_timeout_ms;
 
@@ -422,10 +422,10 @@ struct pubnub_ {
     pubnub_callback_t cb;
     void*             user_data;
 
-#if PUBNUB_CHANGE_DNS_SERVERS
+#ifdef PUBNUB_CHANGE_DNS_SERVERS
     struct pbdns_servers_check dns_check;
 #endif    
-#if PUBNUB_USE_MULTIPLE_ADDRESSES
+#ifdef PUBNUB_USE_MULTIPLE_ADDRESSES
     struct pubnub_multi_addresses spare_addresses;
 #endif
 #endif /* defined(PUBNUB_CALLBACK_API) */
@@ -440,7 +440,7 @@ struct pubnub_ {
       */
     M_heartbeatInfo()
 
-#if PUBNUB_PROXY_API
+#ifdef PUBNUB_PROXY_API
 
     /** The type (protocol) of the proxy to use */
     enum pubnub_proxy_type proxy_type;
@@ -455,7 +455,7 @@ struct pubnub_ {
      */
     struct pubnub_ipv4_address proxy_ipv4_address;
 
-#if PUBNUB_USE_IPV6
+#ifdef PUBNUB_USE_IPV6
     /** Proxy Iv6 address, if and when available through hostname string in
        'numbers and colons' notation. If proxy Ipv6 address is not available
        structure array is filled with zeros.

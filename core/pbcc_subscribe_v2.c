@@ -1,6 +1,6 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 
 #include "pubnub_internal.h"
 
@@ -72,7 +72,7 @@ enum pubnub_res pbcc_subscribe_v2_prep(struct pbcc_context* p,
 
     if (channel_group) { ADD_URL_PARAM(qparam, channel-group, channel_group); }
     if (p->user_id) { ADD_URL_PARAM(qparam, uuid, p->user_id); } // TODO: @reviewers should I change key?
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (p->secret_key == NULL) { ADD_URL_AUTH_PARAM(p, qparam, auth); }
     ADD_TS_TO_URL_PARAM();
 #else
@@ -82,11 +82,11 @@ enum pubnub_res pbcc_subscribe_v2_prep(struct pbcc_context* p,
     if (filter_expr) { ADD_URL_PARAM(qparam, filter-expr, filter_expr); }
     if (heartbeat) { ADD_URL_PARAM_SIZET(qparam, heartbeat, (unsigned long)*heartbeat); }
     
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
   SORT_URL_PARAMETERS(qparam);
 #endif
     ENCODE_URL_PARAMETERS(p, qparam);
-#if PUBNUB_CRYPTO_API
+#ifdef PUBNUB_CRYPTO_API
     if (p->secret_key != NULL) {
         rslt = pbcc_sign_url(p, "", pubnubSendViaGET, true);
         if (rslt != PNR_OK) {

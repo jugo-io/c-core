@@ -1,11 +1,11 @@
 /* -*- c-file-style:"stroustrup"; indent-tabs-mode: nil -*- */
 
-#if PUBNUB_USE_SUBSCRIBE_V2
+#ifdef PUBNUB_USE_SUBSCRIBE_V2
 
 #if !defined INC_PUBNUB_SUBSCRIBE_V2_MESSAGE
 #define      INC_PUBNUB_SUBSCRIBE_V2_MESSAGE
 
-#if !PUBNUB_USE_SUBSCRIBE_V2
+#ifndef PUBNUB_USE_SUBSCRIBE_V2
 #error To use the subscribe V2 API you must define PUBNUB_USE_SUBSCRIBE_V2=1
 #endif
 
